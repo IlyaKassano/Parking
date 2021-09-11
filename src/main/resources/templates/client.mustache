@@ -6,8 +6,8 @@
 </head>
 <body>
     <form method = "post" name = "form" onsubmit = "return valid_data()">
-        <input name = "fio" type = "text" id = "fio" placeholder = "Введите ФИО клиента" />
-        <input name = "telephone" type = "text" id = "telephone" placeholder = "Введите телефон" />
+        <input name = "fio" type = "text" placeholder = "Введите ФИО клиента" />
+        <input name = "telephone" type = "text" placeholder = "Введите телефон" />
         <button type = "submit" onclick = "form_control()">Добавить</button>
         <div id = "error"></div>
     </form>
@@ -15,7 +15,8 @@
     {{#clients}}
     <div>
         <b>{{idClient}}</b>
-        <p>{{lastName}} " " {{firstName}}</p>
+        <!--FIXME Исправить ошибку с secondName-->
+        <span>{{lastName}} " " {{firstName}}</span>
         <p>{{telephone}}</p>
     </div>
     {{/clients}}

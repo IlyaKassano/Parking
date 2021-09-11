@@ -4,8 +4,8 @@ function form_control(){
 	let elem = document.getElementsByName('fio')[0];
 	let error = document.getElementById('error');
 	let fio = elem.value;
-	console.log(error);
 	fio = fio.trim();
+	
 	if (fio == "") {
 		elem.style.backgroundColor = "red";
 		error.innerHTML = "Введите ФИО";
