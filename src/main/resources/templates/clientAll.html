@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Все клиенты</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <script type="text/javascript" th:src="@{/javascript/main.js}"></script>
+</head>
+<body>
+    <a href="/home" id = "home">Главная</a>
+    <h2>Все клиенты</h2>
+    <form method = "post" name = "filter">
+        <input name = "fio" type = "text" placeholder = "Введите ФИО для поиска"/>
+        <button type = "submit">Найти</button>
+        <a href="/clientAll">Обновить</a>
+        <div id = "error"></div>
+    </form>
+    <table id = "list" th:each = "el: ${clients}">
+        <tr>
+            <td>
+                <div id = "listItem" class = "listId" th:text="${el.idClient}"> </div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}"></div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el.telephone}"></div>
+            </td>
+            <td>
+                <a id = "listItem" th:href = "'/clientEdit/' + ${el.idClient}">Изменить</a>
+            </td>
+            <td>
+                <a id = "listItem" th:href = "'/clientDelete/' + ${el.idClient}">Удалить</a>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

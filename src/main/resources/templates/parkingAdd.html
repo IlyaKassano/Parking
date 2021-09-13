@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Оформление парковки</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    </head>
+    <body>
+    <a href="/home" id = "home">Главная</a>
+        <h1>Оформление парковки</h1>
+        <form method = "post" name = "form">
+            <!--Выбор клиента-->
+            <select name = "idClient" id = "select">
+                <div th:each = "el: ${clients}">
+                    <option th:value = "${el.idClient}"
+                            th:text = "${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}">
+                    </option>
+                </div>
+            </select>
+            <!--Выбор автомобиля-->
+            <select name = "idAuto" id = "select">
+                <div th:each = "el: ${autos}">
+                    <option th:value = "${el.idAuto}"
+                            th:text = "${el.brand} + ' ' + ${el.model}">
+                    </option>
+                </div>
+            </select>
+            <!--Выбор парковочного еста-->
+            <select name = "idLot" id = "select">
+                <div th:each = "el: ${lots}">
+                    <option th:value = "${el.idLot}"
+                            th:text = "${el.name}">
+                    </option>
+                </div>
+            </select>
+            <input name = "lotItem" type = "number" placeholder = "Введите номер парковочного места" />
+            <input name = "dateParking" type = "datetime-local" />
+            <input name = "dateDepart" type = "datetime-local" />
+            <input name = "paid" type = "checkbox"/>
+            <button type = "submit">Добавить</button>
+        </form>
+    </body>
+</html>

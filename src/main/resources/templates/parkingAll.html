@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Все оформления парковок</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+</head>
+<body>
+    <a href="/home" id = "home">Главная</a>
+    <h2>Все оформления парковок</h2>
+    <div th:each = "el: ${parking}">
+        <div th:text="${el.clientByIdClient.firstName}"> </div>
+    </div>
+    <!--<form method = "post">
+        <div>
+            <div id = "select">Выберите адрес:</div>
+            <select name = "lot" id = "select">
+                <div th:each = "el: ${lots}">
+                    <option name = "address" th:value = "${el.address}" th:text = "${el.address}"></option>
+                </div>
+            </select>
+        </div>
+        <button type = "submit">Найти</button>
+        <a href="/parkingLotAll">Обновить</a>
+    </form>-->
+    <!--<table id = "list" th:each = "el: ${parking}">
+        <tr>
+            <td>
+                <div id = "listItem" th:text="${el.clientByIdClient}"> </div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el.address}"></div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el.numLots}"></div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el.price}"></div>
+            </td>
+            <td>
+                <a id = "listItem" th:href = "'/parkingLotEdit/' + ${el.idLot}">Изменить</a>
+            </td>
+            <td>
+                <a id = "listItem" th:href = "'/parkingLotDelete/' + ${el.idLot}">Удалить</a>
+            </td>
+        </tr>
+    </table>-->
+
+</body>
+</html>

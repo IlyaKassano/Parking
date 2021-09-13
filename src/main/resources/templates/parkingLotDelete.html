@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Удаление парковочного места</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+        <script type="text/javascript" th:src="@{/javascript/main.js}"></script>
+    </head>
+    <body>
+        <a href="/home" id = "home">Главная</a>
+        <h1>Удаление парковочного места</h1>
+        <div id = "list" th:each = "el: ${lots}">
+            <form method = "post" name = "form">
+                <input id = "listItem" class = "listId" name = "idLot" readonly th:value = "${el.idLot}"/>
+                <input id = "listItem" type = "text" readonly th:value="${el.name}"/>
+                <input id = "listItem" type = "text" readonly th:value="${el.address}"/>
+                <input id = "listItem" type = "number" readonly th:value = "${el.numLots}"/>
+                <input id = "listItem" type = "number" step="0.01" readonly th:value = "${el.price}"/>
+                <button id = "listItem" type = "submit">Удалить</button>
+            </form>
+        </div>
+
+    </body>
+</html>

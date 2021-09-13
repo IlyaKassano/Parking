@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Изменение автомобиля</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+        <script type="text/javascript" th:src="@{/javascript/main.js}"></script>
+    </head>
+    <body>
+        <a href="/home" id = "home">Главная</a>
+        <h1>Изменение автомобиля</h1>
+        <div th:each = "el: ${autos}">
+            <form method = "post" name = "form" onsubmit = "return valid_data()">
+                <input name = "brand" type = "text" th:value = "${el.brand}"/>
+                <input name = "autoModel" type = "text" th:value = "${el.model}"/>
+                <button type = "submit" onclick = "form_control()">Изменить</button>
+                <div id = "err"></div>
+            </form>
+        </div>
+
+        <!--<h2>Список автомобилей</h2>
+        <form method = "post" name = "filter" action = "autoEdit/filterAuto">
+            <div>
+                <div id = "select">Выберите брэнд:</div>
+                <select name = "brand" id = "select">
+                    <div th:each = "el: ${autos}">
+                        <option th:value = "${el.brand}" th:text = "${el.brand}"></option>
+                    </div>
+                </select>
+            </div>
+            <div>
+                <div id = "select">Выберите модель:</div>
+                <select name = "autoModel" id = "select">
+                    <div th:each = "el: ${autos}">
+                        <option th:value = "${el.model}" th:text = "${el.model}"></option>
+                    </div>
+                </select>
+            </div>
+            <button type = "submit">Найти</button>
+            <div id = "error"></div>
+        </form>
+        <div id = "list" th:each = "el: ${autos}">
+            <form th:action = "'/autoEdit/' + ${el.idAuto}">
+                <div id = "listItem" class = "listId" th:text="${el.idAuto}"> </div>
+                <div id = "listItem" th:text="${el.brand}"></div>
+                <div id = "listItem" th:text="${el.model}"></div>
+                <button type = "submit" id = "listItem">Изменить</button>
+            </form>
+        </div>-->
+
+    </body>
+</html>

@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Добавление парковочного места</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    </head>
+    <body>
+    <a href="/home" id = "home">Главная</a>
+        <h1>Добавление нового парковочного места</h1>
+        <form method = "post" name = "form">
+            <input name = "name" type = "text" placeholder = "Введите имя парковочного места" />
+            <input name = "address" type = "text" placeholder = "Введите адрес" />
+            <input name = "numLots" type = "number" placeholder = "Введите количество мест" />
+            <input name = "price" type = "number" step="0.01" placeholder = "Введите цену" />
+            <button type = "submit" onclick = "form_control()">Добавить</button>
+            <div id = "err"></div>
+        </form>
+    </body>
+</html>

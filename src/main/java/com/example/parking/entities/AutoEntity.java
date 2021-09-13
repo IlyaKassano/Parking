@@ -1,13 +1,16 @@
-package com.example.parking.domain;
+package com.example.parking.entities;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Objects;
 
 @Entity
-@Table(name = "auto", schema = "parking")
+@Table(name = "auto", schema = "parking", catalog = "")
 public class AutoEntity {
     private int idAuto;
     private String brand;
     private String model;
+    private Collection<ParkingEntity> parkingsByIdAuto;
 
     @Id
     @Column(name = "id_auto", nullable = false)
@@ -43,21 +46,23 @@ public class AutoEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         AutoEntity that = (AutoEntity) o;
-
-        if (idAuto != that.idAuto) return false;
-        if (brand != null ? !brand.equals(that.brand) : that.brand != null) return false;
-        if (model != null ? !model.equals(that.model) : that.model != null) return false;
-
-        return true;
+        return idAuto == that.idAuto &&
+                Objects.equals(brand, that.brand) &&
+                Objects.equals(model, that.model);
     }
 
     @Override
     public int hashCode() {
-        int result = idAuto;
-        result = 31 * result + (brand != null ? brand.hashCode() : 0);
-        result = 31 * result + (model != null ? model.hashCode() : 0);
-        return result;
+        return Objects.hash(idAuto, brand, model);
+    }
+
+    @OneToMany(mappedBy = "autoByIdCar")
+    public Collection<ParkingEntity> getParkingsByIdAuto() {
+        return parkingsByIdAuto;
+    }
+
+    public void setParkingsByIdAuto(Collection<ParkingEntity> parkingsByIdAuto) {
+        this.parkingsByIdAuto = parkingsByIdAuto;
     }
 }

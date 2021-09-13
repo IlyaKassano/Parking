@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Изменение парковочного места</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+        <script type="text/javascript" th:src="@{/javascript/main.js}"></script>
+    </head>
+    <body>
+        <a href="/home" id = "home">Главная</a>
+        <h1>Изменение парковочного места</h1>
+        <div th:each = "el: ${lots}">
+            <form method = "post" name = "form">
+                <input name = "name" type = "text" th:value = "${el.name}"/>
+                <input name = "address" type = "text" th:value = "${el.address}"/>
+                <input name = "numLots" type = "number" th:value = "${el.numLots}"/>
+                <input name = "price" type = "number" step="0.01" th:value = "${el.price}"/>
+                <button type = "submit">Изменить</button>
+            </form>
+        </div>
+    </body>
+</html>

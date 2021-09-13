@@ -1,0 +1,43 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Удаление автомобиля</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+        <script type="text/javascript" th:src="@{/javascript/main.js}"></script>
+    </head>
+    <body>
+        <a href="/home" id = "home">Главная</a>
+        <h1>Удаление автомобиля</h1>
+        <!--<form method = "post" name = "filter" action = "autoDelete/filterAuto">
+            <div>
+                <div id = "select">Выберите брэнд:</div>
+                <select name = "brand" id = "select">
+                    <div th:each = "el: ${autos}">
+                        <option th:value = "${el.brand}" th:text = "${el.brand}"></option>
+                    </div>
+                </select>
+            </div>
+            <div>
+                <div id = "select">Выберите модель:</div>
+                <select name = "autoModel" id = "select">
+                    <div th:each = "el: ${autos}">
+                        <option th:value = "${el.model}" th:text = "${el.model}"></option>
+                    </div>
+                </select>
+            </div>
+            <button type = "submit">Найти</button>
+            <div id = "error"></div>
+        </form>-->
+        <div id = "list" th:each = "el: ${autos}">
+            <form method = "post" name = "form">
+                <input id = "listItem" class = "listId" name = "idAuto" readonly th:value = "${el.idAuto}"/>
+                <input id = "listItem" type = "text" readonly th:value="${el.brand}"/>
+                <input id = "listItem" type = "text" readonly th:value = "${el.model}"/>
+                <button id = "listItem" type = "submit">Удалить</button>
+                <div id = "err"></div>
+            </form>
+        </div>
+
+    </body>
+</html>

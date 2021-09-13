@@ -2,7 +2,7 @@ let valid;
 
 function form_control(){
 	let elem = document.getElementsByName('fio')[0];
-	let error = document.getElementById('error');
+	let error = document.getElementById('err');
 	let fio = elem.value;
 	fio = fio.trim();
 	
