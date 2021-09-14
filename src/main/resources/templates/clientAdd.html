@@ -11,8 +11,9 @@
     <h1>Добавление нового клиента</h1>
     <form method = "post" name = "form" onsubmit = "return valid_data()">
         <input name = "fio" type = "text" placeholder = "Введите ФИО клиента" />
+        <!--TODO Шаблон для ввода телефона-->
         <input name = "telephone" type = "text" placeholder = "Введите телефон" />
-        <button type = "submit" onclick = "form_control()">Добавить</button>
+        <button type = "submit" onclick = "clientFormControl()">Добавить</button>
         <div id = "err"></div>
     </form>
 

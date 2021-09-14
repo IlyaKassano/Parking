@@ -2,19 +2,80 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8" />
-        <title>Изменение парковочного места</title>
+        <title>Изменение оформления парковки</title>
         <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
-        <script type="text/javascript" th:src="@{/javascript/main.js}"></script>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/parking.css}">
     </head>
     <body>
         <a href="/home" id = "home">Главная</a>
-        <h1>Изменение парковочного места</h1>
-        <div th:each = "el: ${lots}">
+        <h1>Изменение оформления парковки</h1>
+        <div id = "error"></div>
             <form method = "post" name = "form">
-                <input name = "address" type = "text" th:value = "${el.address}"/>
-                <input name = "numLots" type = "number" th:value = "${el.numLots}"/>
-                <input name = "price" type = "number" step="0.01" th:value = "${el.price}"/>
-                <button type = "submit">Изменить</button>
+                <table id = "table">
+                    <tr>
+                        <th>Код</th>
+                        <th>Клиент</th>
+                        <th>Автомобиль</th>
+                        <th>Парковочное место</th>
+                        <th>Номер места</th>
+                        <th>Припаркован</th>
+                        <th>Убыл</th>
+                        <th>Оплачено</th>
+                        <th></th>
+                    </tr>
+                    <div th:each = "el: ${parking}">
+                        <tr>
+                            <td>
+                                <input name = "idParking" th:value = "${el.idParking}" type = "number" readonly />
+                            </td>
+                            <td>
+                                <!--Выбор клиента-->
+                                <select name = "idClient">
+                                    <div th:each = "el: ${clients}">
+                                        <option th:value = "${el.idClient}"
+                                                th:text = "${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </td>
+                            <td>
+                                <!--Выбор автомобиля-->
+                                <select name = "idAuto">
+                                    <div th:each = "el: ${autos}">
+                                        <option th:value = "${el.idAuto}"
+                                                th:text = "${el.brand} + ' ' + ${el.model}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </td>
+                            <td>
+                                <!--Выбор парковочного еста-->
+                                <select name = "idLot">
+                                    <div th:each = "el: ${lots}">
+                                        <option th:value = "${el.idLot}"
+                                                th:text = "${el.name}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </td>
+                            <td>
+                                <input name = "lotItem" th:value = "${el.lotItem}" type = "number" placeholder = "Номер парковки" />
+                            </td>
+                            <td>
+                                <input name = "dateParking" th:value = "${el.dateParking}" type = "datetime-local" />
+                            </td>
+                            <td>
+                                <input name = "dateDepart" th:value = "${el.dateDepart}" type = "datetime-local" />
+                            </td>
+                            <td>
+                                <input name = "paid" th:checked = "${el.paid}" type = "checkbox"/>
+                            </td>
+                            <td>
+                                <button type = "submit">Изменить</button>
+                            </td>
+                        </tr>
+                    </div>
+                </table>
             </form>
         </div>
     </body>

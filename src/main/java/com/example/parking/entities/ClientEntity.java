@@ -1,7 +1,6 @@
 package com.example.parking.entities;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +11,6 @@ public class ClientEntity {
     private String lastName;
     private String secondName;
     private String telephone;
-    private Collection<ParkingEntity> parkingsByIdClient;
 
     @Id
     @Column(name = "id_client", nullable = false)
@@ -79,14 +77,5 @@ public class ClientEntity {
     @Override
     public int hashCode() {
         return Objects.hash(idClient, firstName, lastName, secondName, telephone);
-    }
-
-    @OneToMany(mappedBy = "clientByIdClient")
-    public Collection<ParkingEntity> getParkingsByIdClient() {
-        return parkingsByIdClient;
-    }
-
-    public void setParkingsByIdClient(Collection<ParkingEntity> parkingsByIdClient) {
-        this.parkingsByIdClient = parkingsByIdClient;
     }
 }

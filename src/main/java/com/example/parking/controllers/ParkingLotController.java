@@ -59,8 +59,16 @@ public class ParkingLotController {
         return "parkingLotEdit";
     }
 
+    @PostMapping(path="/parkingLotEdit")
+    public String editLot (@RequestParam int idLot, Map<String, Object> model) {
+
+        Iterable<ParkingLotEntity> lots = lotsRepository.findAll();
+        model.put("lots", lots);
+        return "redirect:/parkingLotEdit/" + idLot;
+    }
+
     @PostMapping(path="/parkingLotEdit/{id}")
-    public String editLot (@PathVariable(value = "id") int idLot, @RequestParam String name, @RequestParam String address, @RequestParam int numLots,
+    public String editByIdLot (@PathVariable(value = "id") int idLot, @RequestParam String name, @RequestParam String address, @RequestParam int numLots,
                            @RequestParam BigDecimal price, Map<String, Object> model) {
         ParkingLotEntity lot = lotsRepository.findById(idLot).orElseThrow();
 
@@ -80,7 +88,7 @@ public class ParkingLotController {
 
         Iterable<ParkingLotEntity> lots = lotsRepository.findAll();
         model.put("lots", lots);
-        return "parkingLotEdit";
+        return "redirect:/parkingLotEdit";
     }
 
     @GetMapping(path="/parkingLotDelete")

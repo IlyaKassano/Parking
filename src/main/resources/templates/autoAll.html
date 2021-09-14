@@ -10,43 +10,54 @@
     <a href="/home" id = "home">Главная</a>
     <h2>Все автомобили</h2>
     <form method = "post" name = "filter">
-        <div>
-            <div id = "select">Выберите брэнд:</div>
-            <select name = "brand" id = "select">
-                <div th:each = "el: ${autos}">
-                    <option th:value = "${el.brand}" th:text = "${el.brand}"></option>
-                </div>
-            </select>
-        </div>
-        <div>
-            <div id = "select">Выберите модель:</div>
-            <select name = "autoModel" id = "select">
-                <div th:each = "el: ${autos}">
-                    <option th:value = "${el.model}" th:text = "${el.model}"></option>
-                </div>
-            </select>
-        </div>
+        <div id = "select">Выберите брэнд:</div>
+        <select name = "brand" id = "select">
+            <div th:each = "el: ${autos}">
+                <option th:value = "${el.brand}" th:text = "${el.brand}"></option>
+            </div>
+        </select>
+        <div id = "select">Выберите модель:</div>
+        <select name = "autoModel" id = "select">
+            <div th:each = "el: ${autos}">
+                <option th:value = "${el.model}" th:text = "${el.model}"></option>
+            </div>
+        </select>
         <button type = "submit">Найти</button>
         <a href="/autoAll">Обновить</a>
     </form>
-    <table id = "list" th:each = "el: ${autos}">
+    <table id = "list" cellspacing = "0">
         <tr>
-            <td>
-                <div id = "listItem" class = "listId" th:text="${el.idAuto}"> </div>
-            </td>
-            <td>
-                <div id = "listItem" th:text="${el.brand}"></div>
-            </td>
-            <td>
-                <div id = "listItem" th:text="${el.model}"></div>
-            </td>
-            <td>
-                <a id = "listItem" th:href = "'/autoEdit/' + ${el.idAuto}">Изменить</a>
-            </td>
-            <td>
-                <a id = "listItem" th:href = "'/autoDelete/' + ${el.idAuto}">Удалить</a>
-            </td>
+            <th>
+                Код
+            </th>
+            <th>
+                Брэнд
+            </th>
+            <th>
+                Модель
+            </th>
+            <th> </th>
+            <th> </th>
         </tr>
+        <div th:each = "el: ${autos}">
+            <tr>
+                <td>
+                    <div id = "listItem" class = "listId" th:text="${el.idAuto}"> </div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.brand}"></div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.model}"></div>
+                </td>
+                <td>
+                    <a id = "listItem" th:href = "'/autoEdit/' + ${el.idAuto}">Изменить</a>
+                </td>
+                <td>
+                    <a id = "listItem" th:href = "'/autoDelete/' + ${el.idAuto}">Удалить</a>
+                </td>
+            </tr>
+        </div>
     </table>
 
 </body>

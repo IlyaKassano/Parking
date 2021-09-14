@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ошибка</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+</head>
+<body>
+    <a href="/home" id = "home">Главная</a>
+    <div th:each = "el: ${err}">
+        <h1 th:text = "${el.header}"></h1>
+        <!--TODO Шаблон вывода ошибки-->
+        <div th:text = "${el.description}"></div>
+    </div>
+</body>
+</html>

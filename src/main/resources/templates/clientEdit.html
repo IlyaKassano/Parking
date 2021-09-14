@@ -11,9 +11,10 @@
         <h1>Изменение клиента</h1>
         <div th:each = "el: ${clients}">
             <form method = "post" name = "form" onsubmit = "return valid_data()">
+                <input name = "idClient" th:value = "${el.idClient}" type = "number" readonly />
                 <input name = "fio" type = "text" th:value="${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}"/>
                 <input name = "telephone" type = "text" th:value = "${el.telephone}"/>
-                <button type = "submit" onclick = "form_control()">Изменить</button>
+                <button type = "submit" onclick = "clientFormControl()">Изменить</button>
                 <div id = "err"></div>
             </form>
         </div>

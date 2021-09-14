@@ -1,7 +1,6 @@
 package com.example.parking.entities;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -10,7 +9,6 @@ public class AutoEntity {
     private int idAuto;
     private String brand;
     private String model;
-    private Collection<ParkingEntity> parkingsByIdAuto;
 
     @Id
     @Column(name = "id_auto", nullable = false)
@@ -55,14 +53,5 @@ public class AutoEntity {
     @Override
     public int hashCode() {
         return Objects.hash(idAuto, brand, model);
-    }
-
-    @OneToMany(mappedBy = "autoByIdCar")
-    public Collection<ParkingEntity> getParkingsByIdAuto() {
-        return parkingsByIdAuto;
-    }
-
-    public void setParkingsByIdAuto(Collection<ParkingEntity> parkingsByIdAuto) {
-        this.parkingsByIdAuto = parkingsByIdAuto;
     }
 }

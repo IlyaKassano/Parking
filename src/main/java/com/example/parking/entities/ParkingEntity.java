@@ -1,12 +1,13 @@
 package com.example.parking.entities;
 
+import org.hibernate.annotations.Formula;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "parking", schema = "parking")
-@IdClass(ParkingEntityPK.class)
+@Table(name = "parking", schema = "parking", catalog = "")
 public class ParkingEntity {
     private int idParking;
     private int lotItem;
@@ -16,6 +17,11 @@ public class ParkingEntity {
     private ClientEntity clientByIdClient;
     private AutoEntity autoByIdCar;
     private ParkingLotEntity parkingLotByIdLot;
+
+    //TODO Поле расчета стоимости
+    @Transient
+    @Formula("dateDepart - dateParking")
+    public double hours;
 
     @Id
     @Column(name = "id_parking", nullable = false)
@@ -27,7 +33,7 @@ public class ParkingEntity {
         this.idParking = idParking;
     }
 
-    @Id
+    @Basic
     @Column(name = "lot_item", nullable = false)
     public int getLotItem() {
         return lotItem;
@@ -113,4 +119,5 @@ public class ParkingEntity {
     public void setParkingLotByIdLot(ParkingLotEntity parkingLotByIdLot) {
         this.parkingLotByIdLot = parkingLotByIdLot;
     }
+
 }

@@ -11,6 +11,7 @@
         <h1>Изменение парковочного места</h1>
         <div th:each = "el: ${lots}">
             <form method = "post" name = "form">
+                <input name = "idLot" th:value = "${el.idLot}" type = "number" readonly />
                 <input name = "name" type = "text" th:value = "${el.name}"/>
                 <input name = "address" type = "text" th:value = "${el.address}"/>
                 <input name = "numLots" type = "number" th:value = "${el.numLots}"/>

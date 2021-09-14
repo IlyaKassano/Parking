@@ -2,7 +2,6 @@ package com.example.parking.entities;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity
@@ -13,7 +12,6 @@ public class ParkingLotEntity {
     private String address;
     private int numLots;
     private BigDecimal price;
-    private Collection<ParkingEntity> parkingsByIdLot;
 
     @Id
     @Column(name = "id_lot", nullable = false)
@@ -80,14 +78,5 @@ public class ParkingLotEntity {
     @Override
     public int hashCode() {
         return Objects.hash(idLot, name, address, numLots, price);
-    }
-
-    @OneToMany(mappedBy = "parkingLotByIdLot")
-    public Collection<ParkingEntity> getParkingsByIdLot() {
-        return parkingsByIdLot;
-    }
-
-    public void setParkingsByIdLot(Collection<ParkingEntity> parkingsByIdLot) {
-        this.parkingsByIdLot = parkingsByIdLot;
     }
 }

@@ -1,0 +1,54 @@
+#menu {
+    text-align: center;
+}
+
+#dropdown-item {
+    color: black;
+    text-decoration: none;
+    padding: 16px;
+    font-size: 20px;
+    min-width: 250px;
+    font-width: bold;
+}
+
+#dropdown {
+    position: relative;
+    display: inline-block;
+    background-color: #BBB;
+    padding: 20px 0;
+    min-width: 250px;
+}
+
+/* Скрытый блок выпадающего списока */
+#dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 250px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    text-align: left;
+    margin: 20px 0;
+}
+
+/* Элементы выпадающего списка */
+#dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    margin-top: 20px;
+}
+
+#dropdown-content a:hover {
+    background-color: #888;
+}
+
+/* Вывод выпадающего списка при наводке */
+#dropdown:hover #dropdown-content {
+    display: block;
+}
+
+#dropdown:hover {
+    background-color: #AAA;
+}

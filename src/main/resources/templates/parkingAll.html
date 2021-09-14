@@ -4,47 +4,83 @@
     <meta charset="UTF-8" />
     <title>Все оформления парковок</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <!--<link rel="stylesheet" type="text/css" th:href="@{/css/parking.css}">-->
 </head>
 <body>
     <a href="/home" id = "home">Главная</a>
     <h2>Все оформления парковок</h2>
-    <div th:each = "el: ${parking}">
-        <div th:text="${el.clientByIdClient.firstName}"> </div>
-    </div>
-    <!--<form method = "post">
-        <div>
-            <div id = "select">Выберите адрес:</div>
-            <select name = "lot" id = "select">
-                <div th:each = "el: ${lots}">
-                    <option name = "address" th:value = "${el.address}" th:text = "${el.address}"></option>
-                </div>
-            </select>
-        </div>
+    <form method = "post">
+        <!--Выбор клиента-->
+        <select name = "idClient">
+            <div th:each = "el: ${clients}">
+                <option th:value = "${el.idClient}"
+                        th:text = "${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}">
+                </option>
+            </div>
+        </select>
+        <!--Выбор автомобиля-->
+        <select name = "idAuto">
+            <div th:each = "el: ${autos}">
+                <option th:value = "${el.idAuto}"
+                        th:text = "${el.brand} + ' ' + ${el.model}">
+                </option>
+            </div>
+        </select>
+        <!--Выбор парковочного еста-->
+        <select name = "idLot">
+            <div th:each = "el: ${lots}">
+                <option th:value = "${el.idLot}"
+                        th:text = "${el.name}">
+                </option>
+            </div>
+        </select>
         <button type = "submit">Найти</button>
-        <a href="/parkingLotAll">Обновить</a>
-    </form>-->
-    <!--<table id = "list" th:each = "el: ${parking}">
+        <a href="/parkingAll">Обновить</a>
+    </form>
+    <table id = "list" cellspacing = "0">
         <tr>
-            <td>
-                <div id = "listItem" th:text="${el.clientByIdClient}"> </div>
-            </td>
-            <td>
-                <div id = "listItem" th:text="${el.address}"></div>
-            </td>
-            <td>
-                <div id = "listItem" th:text="${el.numLots}"></div>
-            </td>
-            <td>
-                <div id = "listItem" th:text="${el.price}"></div>
-            </td>
-            <td>
-                <a id = "listItem" th:href = "'/parkingLotEdit/' + ${el.idLot}">Изменить</a>
-            </td>
-            <td>
-                <a id = "listItem" th:href = "'/parkingLotDelete/' + ${el.idLot}">Удалить</a>
-            </td>
+            <th>Клиент</th>
+            <th>Автомобиль</th>
+            <th>Парковочное место</th>
+            <th>Номер места</th>
+            <th>Припаркован</th>
+            <th>Убыл</th>
+            <th>Оплачено</th>
+            <th></th>
+            <th></th>
         </tr>
-    </table>-->
+        <div th:each = "el: ${parking}">
+            <tr>
+                <td>
+                    <div id = "listItem" th:text="${el.clientByIdClient.lastName} + ' ' + ${el.clientByIdClient.firstName} + ' ' + ${el.clientByIdClient.secondName}"> </div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.autoByIdCar.brand} + ' ' + ${el.autoByIdCar.model}"></div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.parkingLotByIdLot.name}"></div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.lotItem}"></div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.dateParking}"></div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.dateDepart}"></div>
+                </td>
+                <td>
+                    <div id = "listItem" th:text="${el.hours}"></div>
+                </td>
+                <td>
+                    <a id = "listItem" th:href = "'/parkingEdit/' + ${el.idParking}">Изменить</a>
+                </td>
+                <td>
+                    <a id = "listItem" th:href = "'/parkingDelete/' + ${el.idParking}">Удалить</a>
+                </td>
+            </tr>
+        </div>
+    </table>
 
 </body>
 </html>

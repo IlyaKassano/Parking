@@ -1,6 +1,6 @@
 let valid;
 
-function form_control(){
+function clientFormControl(){
 	let elem = document.getElementsByName('fio')[0];
 	let error = document.getElementById('err');
 	let fio = elem.value;
@@ -25,5 +25,23 @@ function form_control(){
 };
 
 function valid_data(){
-	return form_control();
+	return valid;
 };
+
+function parkingFormControl(){
+	let elem1 = document.getElementsByName('dateParking')[0];
+	let elem2 = document.getElementsByName('dateDepart')[0];
+	let error = document.getElementById('error');
+	let dateParking = elem1.value;
+	let dateDepart = elem2.value;
+
+	if((dateDepart < dateParking) && dateDepart != null && dateDepart != "") {
+		elem2.style.backgroundColor = "red";
+		error.innerHTML = "Дата убытия не может быть больше даты парковки!";
+		return valid = false;
+	}
+
+	elem2.style.backgroundColor = "";
+	error.innerText.innerHTML = "";
+	return valid = true;
+}

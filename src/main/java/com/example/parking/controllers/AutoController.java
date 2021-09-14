@@ -65,8 +65,15 @@ public class AutoController {
         return "autoEdit";
     }
 
+    @PostMapping(path="/autoEdit")
+    public String editAuto (@RequestParam int idAuto, Map<String, Object> model) {
+        Iterable<AutoEntity> autos = autoRepository.findAll();
+        model.put("autos", autos);
+        return "redirect:/autoEdit/" + idAuto;
+    }
+
     @PostMapping(path="/autoEdit/{id}")
-    public String editAuto (@PathVariable(value = "id") int idAuto, @RequestParam String brand, @RequestParam String autoModel,
+    public String editByIdAuto (@PathVariable(value = "id") int idAuto, @RequestParam String brand, @RequestParam String autoModel,
                             Map<String, Object> model) {
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
 
@@ -84,7 +91,7 @@ public class AutoController {
 
         Iterable<AutoEntity> autos = autoRepository.findAll();
         model.put("autos", autos);
-        return "autoEdit";
+        return "redirect:/autoEdit";
     }
 
     @GetMapping(path="/autoDelete")

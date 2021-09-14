@@ -40,7 +40,7 @@ public class ClientController {
             clientRepository.save(c);
         }
         catch(Exception e) {
-            System.out.println(e.getMessage());
+            //TODO Обработка ошибки
             return "redirect:/error/addDbError";
         }
 
@@ -62,8 +62,15 @@ public class ClientController {
         return "clientEdit";
     }
 
+    @PostMapping(path="/clientEdit")
+    public String editClient (@RequestParam int idClient, Map<String, Object> model) {
+        Iterable<ClientEntity> clients = clientRepository.findAll();
+        model.put("clients", clients);
+        return "redirect:/clientEdit/" + idClient;
+    }
+
     @PostMapping(path="/clientEdit/{id}")
-    public String editClient (@PathVariable(value = "id") int idClient, @RequestParam String fio,
+    public String editByIdClient (@PathVariable(value = "id") int idClient, @RequestParam String fio,
                                 @RequestParam(value = "telephone") Optional<String> telephone, Map<String, Object> model) {
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
         ArrayList<String> fio_arr = getFio(fio);
