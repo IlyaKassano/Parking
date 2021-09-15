@@ -3,6 +3,7 @@ package com.example.parking.error;
 import java.util.HashMap;
 import java.util.Map;
 
+//TODO Свое исключение???
 public class MyError {
     private int status;
     private String header;

@@ -1,29 +1,32 @@
 package com.example.parking.controllers;
 
+import com.example.parking.interfaces.IMainService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Map;
 
 @Controller
 public class MainController {
+    private IMainService mainService;
+
+    //Разворачивание сервиса
+    @Autowired
+    public void setService(IMainService service) {
+        this.mainService = service;
+    }
 
     @GetMapping(path="/home")
-    public String showMenu (Map<String, Object> model) {
-        return "home";
+    public String showMenu () {
+        return mainService.showMenu();
     }
 
     @GetMapping
-    public String redirectHome (Map<String, Object> model) {
-        return "redirect:/home";
+    public String redirectHome () {
+        return mainService.redirectHome();
     }
 
-    //TODO @GetMapping(path="/error")
-
-    @RequestMapping(value = "/staticResourceTest")
-    public String staticResource(Model model) {
-        return "staticResourceTest";
-    }
+    /*@RequestMapping(value = "/staticResourceTest")
+    public String staticResource() {
+        return clientService.staticResource();
+    }*/
 }
