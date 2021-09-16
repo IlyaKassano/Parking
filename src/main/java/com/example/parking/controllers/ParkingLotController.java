@@ -3,6 +3,7 @@ package com.example.parking.controllers;
 import com.example.parking.interfaces.IParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
-import java.util.Map;
 
 @Controller
 public class ParkingLotController {
@@ -22,67 +22,79 @@ public class ParkingLotController {
         this.lotService = service;
     }
 
-    public String showAllLots () {
-        return lotService.showAllLots();
+    @GetMapping(path="/parkingLotAdd")
+    public String getFormClientAdd() {
+        return "parkingLotAdd";
     }
 
-    public String addNewLots (@RequestParam String name, @RequestParam String address,
-                              @RequestParam int numLots, @RequestParam BigDecimal price,
-                              HttpServletResponse response) {
-        return lotService.addNewLot(name, address, numLots, price, response);
+    @PostMapping(path="/parkingLotAdd")
+    public String addNewLot (@RequestParam String name, @RequestParam String address,
+                             @RequestParam int numLots, @RequestParam BigDecimal price,
+                             HttpServletResponse response) {
+        lotService.addNewLot(name, address, numLots, price, response);
+        return "redirect:/parkingLotAll";
     }
 
     @GetMapping(path="/parkingLotEdit")
-    public String getToEditLot (Map<String, Object> model) {
-        return lotService.getToEditLot(model);
+    public String getFormEditLot(Model model) {
+        lotService.findAllLot(model);
+        return "parkingLotEdit";
     }
 
     @GetMapping(path="/parkingLotEdit/{id}")
-    public String getOneToEditLot (@PathVariable(value = "id") int idLot, Map<String, Object> model) {
-        return lotService.getOneToEditLot(idLot, model);
+    public String getFormEditLotById(@PathVariable(value = "id") int idLot, Model model) {
+        lotService.findLotById(idLot, model);
+        return "parkingLotEdit";
     }
 
     @PostMapping(path="/parkingLotEdit")
-    public String editLot (@RequestParam int idLot, Map<String, Object> model) {
-        return lotService.editLot(idLot, model);
+    public String putLotById(@RequestParam int idLot) {
+        return "redirect:/parkingLotEdit/" + idLot;
     }
 
     @PostMapping(path="/parkingLotEdit/{id}")
-    public String editByIdLot (@PathVariable(value = "id") int idLot, @RequestParam String name,
-                               @RequestParam String address, @RequestParam int numLots,
-                           @RequestParam BigDecimal price, Map<String, Object> model,
-                               HttpServletResponse response) {
-        return lotService.editByIdLot(idLot, name, address, numLots, price, model, response);
+    public String putLotByPathId(@PathVariable(value = "id") int idLot, @RequestParam String name,
+                                 @RequestParam String address, @RequestParam int numLots,
+                                 @RequestParam BigDecimal price, Model model,
+                                 HttpServletResponse response) {
+        lotService.editLotById(idLot, name, address, numLots, price, model, response);
+        return "redirect:/parkingLotEdit";
     }
 
     @GetMapping(path="/parkingLotDelete")
-    public String getAllDeleteLot (Map<String, Object> model) {
-        return lotService.getAllDeleteLot(model);
+    public String getAllDeleteLot (Model model) {
+        lotService.findAllLot(model);
+        return "parkingLotDelete";
     }
 
     @GetMapping(path="/parkingLotDelete/{id}")
-    public String getToDeleteLot (@PathVariable(value = "id") int idLot, Map<String, Object> model) {
-        return lotService.getToDeleteLot(idLot, model);
+    public String getToDeleteLot (@PathVariable(value = "id") int idLot, Model model) {
+        lotService.findLotById(idLot, model);
+        return "parkingLotDelete";
     }
 
     @PostMapping(path="/parkingLotDelete" )
-    public String deleteLot (@RequestParam int idLot, Map<String, Object> model) {
-        return lotService.deleteLot(idLot, model);
+    public String deleteLotById(@RequestParam int idLot, Model model) {
+        lotService.deleteLotById(idLot, model);
+        return "parkingLotDelete";
     }
 
     @PostMapping(path="/parkingLotDelete/{id}")
-    public String deleteLotWithId (@RequestParam int idLot, Map<String, Object> model) {
-        return lotService.deleteLotWithId(idLot, model);
+    public String deleteLotByPathId(@PathVariable(value = "id") int idLot, Model model) {
+        lotService.deleteLotById(idLot, model);
+        return "parkingLotDelete";
     }
 
     @GetMapping(path="/parkingLotAll")
-    public String getAllLot (Map<String, Object> model) {
-        return lotService.getAllLot(model);
+    public String getAllLot (Model model) {
+        lotService.findAllLot(model);
+        return "parkingLotAll";
     }
 
     @PostMapping("/parkingLotAll")
-    public String filter (@RequestParam String name, Map<String, Object> model)
+    public String filter (@RequestParam String name, Model model)
     {
-        return lotService.filter(name, model);
+        lotService.getLotByName(name, model);
+        return "parkingLotAll";
     }
 }

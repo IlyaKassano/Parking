@@ -3,93 +3,101 @@ package com.example.parking.controllers;
 import com.example.parking.interfaces.IParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 @Controller
 public class ParkingController {
-    private IParkingService parkingService;
+    private IParkingService lotService;
 
     //Разворачивание сервиса
     @Autowired
     public void setService(IParkingService service) {
-        this.parkingService = service;
+        this.lotService = service;
     }
 
     @GetMapping(path="/parkingAdd")
-    public String showAllParking (Map<String, Object> model) {
-        return parkingService.showAllParking(model);
+    public String getFormParkingAdd() {
+        return "parkingAdd";
     }
 
     @PostMapping(path="/parkingAdd")
     public String addNewParking (@RequestParam int idClient, @RequestParam int idAuto,
-                                 @RequestParam int idLot, @RequestParam int lotItem,
-                                 @RequestParam String dateParking, @RequestParam String dateDepart,
-                                 @RequestParam(value = "paid", required = false) String paid,
-                                 final HttpServletResponse response) {
-        return parkingService.addNewParking(idClient, idAuto, idLot, lotItem, dateParking, dateDepart, paid, response);
+                             @RequestParam int idLot, @RequestParam int lotItem,
+                             @RequestParam String dateParking, @RequestParam String dateDepart,
+                             @RequestParam(value = "paid", required = false) String paid,
+                             final HttpServletResponse response) {
+        lotService.addNewParking(idClient, idAuto, idLot, lotItem, dateParking, dateDepart, paid, response);
+        return "redirect:/parkingAll";
     }
 
     @GetMapping(path="/parkingEdit")
-    public String getToEditParking (Map<String, Object> model) {
-        return parkingService.getToEditParking(model);
+    public String getFormEditParking() {
+        return "redirect:/parkingAll";
     }
 
     @GetMapping(path="/parkingEdit/{id}")
-    public String getOneToEditParking (@PathVariable(value = "id") int idParking, Map<String, Object> model) {
-        return parkingService.getOneToEditParking(idParking, model);
+    public String getFormEditParkingById(@PathVariable(value = "id") int idParking, Model model) {
+        lotService.findParkingById(idParking, model);
+        return "parkingEdit";
     }
 
     @PostMapping(path="/parkingEdit")
-    public String editParking (@RequestParam int idParking, Map<String, Object> model) {
-        return parkingService.editParking(idParking, model);
+    public String putParkingById(@RequestParam(value = "idParking") int idParking) {
+        return "redirect:/parkingEdit/" + idParking;
     }
 
     @PostMapping(path="/parkingEdit/{id}")
-    public String editByIdParking (@PathVariable(value = "id") int idParking, @RequestParam int idClient,
-                               @RequestParam int idAuto, @RequestParam int idLot, @RequestParam int lotItem,
-                               @RequestParam String dateParking, @RequestParam String dateDepart,
-                               @RequestParam(value = "paid", required = false) String paid,
-                                   Map<String, Object> model, HttpServletResponse response)
-    {
-        return parkingService.editByIdParking(idParking, idClient, idAuto, idLot, lotItem, dateParking,
+    public String putParkingByPathId(@PathVariable(value = "id") int idParking, @RequestParam int idClient,
+                                     @RequestParam int idAuto, @RequestParam int idLot, @RequestParam int lotItem,
+                                     @RequestParam String dateParking, @RequestParam String dateDepart,
+                                     @RequestParam(value = "paid", required = false) String paid,
+                                     Model model, HttpServletResponse response) {
+        lotService.editParkingById(idParking, idClient, idAuto, idLot, lotItem, dateParking,
                 dateDepart, paid, model, response);
+        return "redirect:/parkingEdit";
     }
 
     @GetMapping(path="/parkingDelete")
-    public String getAllDeleteParking (Map<String, Object> model) {
-        return parkingService.getAllDeleteParking(model);
+    public String getAllDeleteParking (Model model) {
+        lotService.findAllParking(model);
+        return "parkingDelete";
     }
 
-   @GetMapping(path="/parkingDelete/{id}")
-    public String getToDeleteParking (@PathVariable(value = "id") int idParking, Map<String, Object> model) {
-       return parkingService.getToDeleteParking(idParking, model);
+    @GetMapping(path="/parkingDelete/{id}")
+    public String getToDeleteParking (@PathVariable(value = "id") int idParking, Model model) {
+        lotService.findParkingById(idParking, model);
+        return "parkingDelete";
     }
 
     @PostMapping(path="/parkingDelete" )
-    public String deleteParking (@RequestParam int idParking, Map<String, Object> model) {
-        return parkingService.deleteParking(idParking, model);
+    public String deleteParkingById(@RequestParam int idParking, Model model) {
+        lotService.deleteParkingById(idParking, model);
+        return "parkingDelete";
     }
 
     @PostMapping(path="/parkingDelete/{id}")
-    public String deleteParkingWithId (@RequestParam int idParking, Map<String, Object> model) {
-        return parkingService.deleteParkingWithId(idParking, model);
+    public String deleteParkingByPathId(@PathVariable(value = "id") int idParking, Model model) {
+        lotService.deleteParkingById(idParking, model);
+        return "parkingDelete";
     }
 
     @GetMapping(path="/parkingAll")
-    public String getAllParking (Map<String, Object> model) {
-        return parkingService.getAllParking(model);
+    public String getAllParking (Model model) {
+        lotService.findAllParking(model);
+        return "parkingAll";
     }
 
     @PostMapping("/parkingAll")
     public String filter (@RequestParam int idClient, @RequestParam int idAuto,
-                          @RequestParam int idLot, Map<String, Object> model)
+                          @RequestParam int idLot, Model model)
     {
-        return parkingService.filter(idClient, idAuto, idLot, model);
+        lotService.getParkingByPrimaryCodes(idClient, idAuto, idLot, model);
+        return "parkingAll";
     }
 }

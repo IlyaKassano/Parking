@@ -1,20 +1,16 @@
 package com.example.parking.interfaces;
 
+import org.springframework.ui.Model;
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 import java.util.Optional;
 
 public interface IClientService {
-    String showAllClients ();
-    String addNewClient (String fio, Optional<String> telephone, HttpServletResponse response);
-    String getToEditClient (Map<String, Object> model);
-    String getOneToEditClient (int idClient, Map<String, Object> model);
-    String editClient (int idClient, Map<String, Object> model);
-    String editByIdClient (int idClient, String fio, Optional<String> telephone, Map<String, Object> model, HttpServletResponse response);
-    String getAllDeleteClient (Map<String, Object> model);
-    String getToDeleteClient (int idClient, Map<String, Object> model);
-    String deleteClient (int idClient, Map<String, Object> model);
-    String deleteClientWithId (int idClient, Map<String, Object> model);
-    String getAllClient (Map<String, Object> model);
-    String filter (String fio, Map<String, Object> model);
+    void addNewClient (String fio, Optional<String> telephone, HttpServletResponse response);
+    void findAllClient (Model model);
+    void findClientById (int idClient, Model model);
+    void editClientById ( int idClient, String fio, Optional<String> telephone,
+                        Model model, final HttpServletResponse response);
+    void deleteClientById (int idClient, Model model);
+    void getClientByFio (String fio, Model model);
 }

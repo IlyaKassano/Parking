@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "parking", schema = "parking", catalog = "")
+@Table(name = "parking", schema = "parking")
 public class ParkingEntity {
     private int idParking;
     private int lotItem;
@@ -19,9 +19,8 @@ public class ParkingEntity {
     private ParkingLotEntity parkingLotByIdLot;
 
     //TODO Поле расчета стоимости
-    @Transient
-    @Formula("dateDepart - dateParking")
-    public double hours;
+    @Formula(value = "lot_item * 2")
+    public int hours;
 
     @Id
     @Column(name = "id_parking", nullable = false)

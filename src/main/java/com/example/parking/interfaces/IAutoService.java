@@ -1,19 +1,15 @@
 package com.example.parking.interfaces;
 
+import org.springframework.ui.Model;
+
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 
 public interface IAutoService {
-    String showAllAutos ();
-    String addNewAuto (String brand, String autoModel, HttpServletResponse response);
-    String getToEditAuto (Map<String, Object> model);
-    String getOneToEditAuto (int idAuto, Map<String, Object> model);
-    String editAuto (int idAuto, Map<String, Object> model);
-    String editByIdAuto (int idAuto, String brand, String autoModel, Map<String, Object> model, HttpServletResponse response);
-    String getAllDeleteAuto (Map<String, Object> model);
-    String getToDeleteAuto (int idAuto, Map<String, Object> model);
-    String deleteAuto (int idAuto, Map<String, Object> model);
-    String deleteAutoWithId (int idAuto, Map<String, Object> model);
-    String getAllAuto (Map<String, Object> model);
-    String filter (String brand, String moddel, Map<String, Object> model);
+    void addNewAuto (String brand, String autoModel, final HttpServletResponse response);
+    void findAllAuto (Model model);
+    void findAutoById (int idAuto, Model model);
+    void editAutoById ( int idAuto, String brand, String autoModel,
+                               Model model, final HttpServletResponse response);
+    void deleteAutoById (int idAuto, Model model);
+    void getAutoByBrandAndModel (String brand, String autoModel, Model model);
 }

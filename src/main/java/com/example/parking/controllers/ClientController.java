@@ -3,13 +3,13 @@ package com.example.parking.controllers;
 import com.example.parking.interfaces.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -18,71 +18,80 @@ public class ClientController {
 
     //Разворачивание сервиса
     @Autowired
-    public void setMessageService(IClientService service) {
+    public void setService(IClientService service) {
         this.clientService = service;
     }
 
     @GetMapping(path="/clientAdd")
-    public String showAllClients() {
-        return clientService.showAllClients();
+    public String getFormClientAdd() {
+        return "clientAdd";
     }
 
     @PostMapping(path="/clientAdd")
-    public String addNewClient (@RequestParam String fio, @RequestParam(value = "telephone") Optional<String> telephone,
-                                HttpServletResponse response) {
-        return clientService.addNewClient(fio, telephone, response);
+    public String addNewClient (@RequestParam String fio, @RequestParam(value = "telephone") Optional<String> telephone, HttpServletResponse response) {
+        clientService.addNewClient(fio, telephone, response);
+        return "redirect:/clientAll";
     }
 
     @GetMapping(path="/clientEdit")
-    public String getToEditClient (Map<String, Object> model) {
-        return clientService.getToEditClient(model);
+    public String getFormEditClient(Model model) {
+        clientService.findAllClient(model);
+        return "clientEdit";
     }
 
     @GetMapping(path="/clientEdit/{id}")
-    public String getOneToEditClient (@PathVariable(value = "id") int idClient, Map<String, Object> model) {
-        return clientService.getOneToEditClient(idClient, model);
+    public String getFormEditClientById(@PathVariable(value = "id") int idClient, Model model) {
+        clientService.findClientById(idClient, model);
+        return "clientEdit";
     }
 
     @PostMapping(path="/clientEdit")
-    public String editClient (@RequestParam int idClient, Map<String, Object> model) {
-        return clientService.editClient(idClient, model);
+    public String putClientById(@RequestParam int idClient) {
+        return "redirect:/clientEdit/" + idClient;
     }
 
     @PostMapping(path="/clientEdit/{id}")
-    public String editByIdClient (@PathVariable(value = "id") int idClient, @RequestParam String fio,
-                                @RequestParam(value = "telephone") Optional<String> telephone,
-                                  Map<String, Object> model, HttpServletResponse response) {
-        return clientService.editByIdClient(idClient, fio, telephone, model, response);
+    public String putClientByPathId(@PathVariable(value = "id") int idClient, @RequestParam String fio,
+                                    @RequestParam(value = "telephone") Optional<String> telephone, Model model,
+                                    HttpServletResponse response) {
+        clientService.editClientById(idClient, fio, telephone, model, response);
+        return "redirect:/clientEdit";
     }
 
     @GetMapping(path="/clientDelete")
-    public String getAllDeleteClient (Map<String, Object> model) {
-        return clientService.getAllDeleteClient(model);
+    public String getAllDeleteClient (Model model) {
+        clientService.findAllClient(model);
+        return "clientDelete";
     }
 
     @GetMapping(path="/clientDelete/{id}")
-    public String getToDeleteClient (@PathVariable(value = "id") int idClient, Map<String, Object> model) {
-        return clientService.getToDeleteClient(idClient, model);
+    public String getToDeleteClient (@PathVariable(value = "id") int idClient, Model model) {
+        clientService.findClientById(idClient, model);
+        return "clientDelete";
     }
 
-    @PostMapping(path="/clientDelete")
-    public String deleteClient (@RequestParam int idClient, Map<String, Object> model) {
-        return clientService.deleteClient(idClient, model);
+    @PostMapping(path="/clientDelete" )
+    public String deleteClientById(@RequestParam int idClient, Model model) {
+        clientService.deleteClientById(idClient, model);
+        return "clientDelete";
     }
 
     @PostMapping(path="/clientDelete/{id}")
-    public String deleteClientWithId (@RequestParam int idClient, Map<String, Object> model) {
-        return clientService.deleteClientWithId(idClient, model);
+    public String deleteClientByPathId(@PathVariable(value = "id") int idClient, Model model) {
+        clientService.deleteClientById(idClient, model);
+        return "clientDelete";
     }
 
     @GetMapping(path="/clientAll")
-    public String getAllClient (Map<String, Object> model) {
-        return clientService.getAllClient(model);
+    public String getAllClient (Model model) {
+        clientService.findAllClient(model);
+        return "clientAll";
     }
 
-    @PostMapping("clientAll")
-    public String filter (@RequestParam String fio, Map<String, Object> model)
+    @PostMapping("/clientAll")
+    public String filter (@RequestParam String fio, Model model)
     {
-        return clientService.filter(fio, model);
+        clientService.getClientByFio(fio, model);
+        return "clientAll";
     }
 }

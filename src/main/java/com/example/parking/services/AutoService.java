@@ -4,104 +4,52 @@ import com.example.parking.entities.AutoEntity;
 import com.example.parking.interfaces.IAutoService;
 import com.example.parking.repos.AutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class AutoService implements IAutoService {
     @Autowired
     private AutoRepository autoRepository;
 
-    public String showAllAutos () {
-        return "autoAdd";
-    }
-
-    public String addNewAuto (String brand, String autoModel, final HttpServletResponse response) {
+    public void addNewAuto (String brand, String autoModel, final HttpServletResponse response) {
         AutoEntity auto = new AutoEntity();
         insertToDb(auto, brand, autoModel, response);
-
-        return "redirect:/autoAll";
     }
 
-    public String getToEditAuto (Map<String, Object> model) {
+    public void findAllAuto (Model model) {
         Iterable<AutoEntity> autos = autoRepository.findAll();
-        model.put("autos", autos);
-        return "autoEdit";
+        model.addAttribute("autos", autos);
     }
 
-    public String getOneToEditAuto (int idAuto, Map<String, Object> model) {
+    public void findAutoById (int idAuto, Model model) {
         List<AutoEntity> autos = autoRepository.findByIdAuto(idAuto);
-
-        model.put("autos", autos);
-        return "autoEdit";
+        model.addAttribute("autos", autos);
     }
 
-    public String editAuto (@RequestParam int idAuto, Map<String, Object> model) {
-        Iterable<AutoEntity> autos = autoRepository.findAll();
-        model.put("autos", autos);
-        return "redirect:/autoEdit/" + idAuto;
-    }
-
-    public String editByIdAuto ( int idAuto, String brand, String autoModel,
-                            Map<String, Object> model, final HttpServletResponse response) {
+    public void editAutoById ( int idAuto, String brand, String autoModel,
+                            Model model, final HttpServletResponse response) {
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
         insertToDb(auto, brand, autoModel, response);
 
-        Iterable<AutoEntity> autos = autoRepository.findAll();
-        model.put("autos", autos);
-        return "redirect:/autoEdit";
+        findAllAuto(model);
     }
 
-    public String getAllDeleteAuto (Map<String, Object> model) {
-        Iterable<AutoEntity> autos = autoRepository.findAll();
-
-        model.put("autos", autos);
-        return "autoDelete";
-    }
-
-    public String getToDeleteAuto (int idAuto, Map<String, Object> model) {
-        List<AutoEntity> autos = autoRepository.findByIdAuto(idAuto);
-
-        model.put("autos", autos);
-        return "autoDelete";
-    }
-
-    public String deleteAuto (int idAuto, Map<String, Object> model) {
+    public void deleteAutoById (int idAuto, Model model) {
         AutoEntity a = autoRepository.findById(idAuto).orElseThrow();
         autoRepository.delete(a);
 
-        Iterable<AutoEntity> autos = autoRepository.findAll();
-        model.put("autos", autos);
-        return "autoDelete";
+        findAllAuto(model);
     }
 
-    public String deleteAutoWithId (int idAuto, Map<String, Object> model) {
-        AutoEntity a = autoRepository.findById(idAuto).orElseThrow();
-        autoRepository.delete(a);
-
-        Iterable<AutoEntity> autos = autoRepository.findAll();
-        model.put("autos", autos);
-        return "autoDelete";
-    }
-
-    public String getAllAuto (Map<String, Object> model) {
-        Iterable<AutoEntity> autos = autoRepository.findAll();
-
-        model.put("autos", autos);
-        return "autoAll";
-    }
-
-    public String filter (String brand, String autoModel, Map<String, Object> model)
+    public void getAutoByBrandAndModel (String brand, String autoModel, Model model)
     {
         List<AutoEntity> autos = autoRepository.findByBrandAndModel(brand, autoModel);
-
-        model.put("autos", autos);
-        return "autoAll";
+        model.addAttribute("autos", autos);
     }
 
     /**

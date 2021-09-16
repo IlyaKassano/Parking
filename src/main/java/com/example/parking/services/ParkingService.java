@@ -10,13 +10,13 @@ import com.example.parking.repos.ClientRepository;
 import com.example.parking.repos.ParkingLotRepository;
 import com.example.parking.repos.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class ParkingService implements IParkingService {
@@ -29,15 +29,9 @@ public class ParkingService implements IParkingService {
     @Autowired
     private ParkingRepository parkingRepository;
 
-    public String showAllParking (Map<String, Object> model) {
-        putEntitiesToModel(model);
-        return "parkingAdd";
-    }
-
-    public String addNewParking (int idClient, int idAuto, int idLot, int lotItem,
-                                 String dateParking, String dateDepart, String paid,
-                                 final HttpServletResponse response)
-    {
+    public boolean addNewParking (int idClient, int idAuto, int idLot, int lotItem,
+                           String dateParking, String dateDepart, String paid,
+                           final HttpServletResponse response) {
         //Связанные сущности для вставки в таблицу
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
@@ -49,97 +43,51 @@ public class ParkingService implements IParkingService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return null;
+            return false;
         }
 
         ParkingEntity p = new ParkingEntity();
         insertToDb(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
-
-        return "redirect:/parkingAll";
+        return true;
     }
 
-    public String getToEditParking (Map<String, Object> model) {
+    public void findAllParking (Model model) {
         putEntitiesToModel(model);
-        return "parkingEdit";
     }
 
-    public String getOneToEditParking (int idParking, Map<String, Object> model) {
-        List<ParkingEntity> parking = parkingRepository.findByIdParking(idParking);
+    public void findParkingById (int idParking, Model model) {
         Iterable<ClientEntity> clients = clientRepository.findAll();
         Iterable<AutoEntity> autos = autoRepository.findAll();
         Iterable<ParkingLotEntity> lots = lotRepository.findAll();
+        List<ParkingEntity> parking = parkingRepository.findByIdParking(idParking);
 
-        model.put("clients", clients);
-        model.put("autos", autos);
-        model.put("lots", lots);
-        model.put("parking", parking);
-        return "parkingEdit";
+        model.addAttribute("clients", clients);
+        model.addAttribute("autos", autos);
+        model.addAttribute("lots", lots);
+        model.addAttribute("parking", parking);
     }
 
-    public String editParking (int idParking, Map<String, Object> model) {
-        putEntitiesToModel(model);
-        return "redirect:/parkingEdit/" + idParking;
-    }
-
-    public String editByIdParking (int idParking, int idClient, int idAuto, int idLot, int lotItem,
-                               String dateParking, String dateDepart, String paid,
-                               Map<String, Object> model, HttpServletResponse response) 
-    {
+    public void editParkingById (int idParking, int idClient, int idAuto, int idLot, int lotItem,
+                                 String dateParking, String dateDepart, String paid,
+                                 Model model, HttpServletResponse response) {
         ParkingEntity p = parkingRepository.findById(idParking).orElseThrow();
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
 
-        //Вставка данных в БД
-        try {
-            insertToDb(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return "redirect:/error/addDbError";
-        }
-
+        insertToDb(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
         putEntitiesToModel(model);
-        return "redirect:/parkingEdit";
     }
 
-    public String getAllDeleteParking (Map<String, Object> model) {
-        Iterable<ParkingEntity> parking = parkingRepository.findAll();
-
-        model.put("parking", parking);
-        return "parkingDelete";
-    }
-
-    public String getToDeleteParking (int idParking, Map<String, Object> model) {
-        ParkingEntity parking = parkingRepository.findById(idParking).orElseThrow();
-
-        model.put("parking", parking);
-        return "parkingDelete";
-    }
-
-    public String deleteParking (int idParking, Map<String, Object> model) {
+    public void deleteParkingById (int idParking, Model model) {
         ParkingEntity a = parkingRepository.findById(idParking).orElseThrow();
         parkingRepository.delete(a);
 
-        putToModel(model);
-        return "parkingDelete";
+        findAllParking(model);
     }
-
-    public String deleteParkingWithId (int idParking, Map<String, Object> model) {
-        ParkingEntity a = parkingRepository.findById(idParking).orElseThrow();
-        parkingRepository.delete(a);
-
-        putToModel(model);
-        return "parkingDelete";
-    }
-
-    public String getAllParking (Map<String, Object> model) {
-        putEntitiesToModel(model);
-        return "parkingAll";
-    }
-
-    public String filter (int idClient, int idAuto,
-                          int idLot, Map<String, Object> model)
+    
+    public void getParkingByPrimaryCodes (int idClient, int idAuto,
+                          int idLot, Model model)
     {
         //Связанные сущности
         ClientEntity clients = clientRepository.findById(idClient).orElseThrow();
@@ -147,32 +95,26 @@ public class ParkingService implements IParkingService {
         ParkingLotEntity lots = lotRepository.findById(idLot).orElseThrow();
         Iterable<ParkingEntity> parking = parkingRepository.findByClientByIdClientAndAutoByIdCarAndParkingLotByIdLot(clients, autos, lots);
 
-        model.put("clients", clients);
-        model.put("autos", autos);
-        model.put("lots", lots);
-        model.put("parking", parking);
-        return "parkingAll";
+        model.addAttribute("clients", clients);
+        model.addAttribute("autos", autos);
+        model.addAttribute("lots", lots);
+        model.addAttribute("parking", parking);
     }
 
-    private void putToModel(Map<String, Object> model) {
-        Iterable<ParkingEntity> parking = parkingRepository.findAll();
-        model.put("parking", parking);
-    }
-
-    private void putEntitiesToModel(Map<String, Object> model){
+    private void putEntitiesToModel(Model model){
         Iterable<ClientEntity> clients = clientRepository.findAll();
         Iterable<AutoEntity> autos = autoRepository.findAll();
         Iterable<ParkingLotEntity> lots = lotRepository.findAll();
         Iterable<ParkingEntity> parking = parkingRepository.findAll();
 
-        model.put("clients", clients);
-        model.put("autos", autos);
-        model.put("lots", lots);
-        model.put("parking", parking);
+        model.addAttribute("clients", clients);
+        model.addAttribute("autos", autos);
+        model.addAttribute("lots", lots);
+        model.addAttribute("parking", parking);
     }
 
     private void insertToDb(ParkingEntity p, ClientEntity client, AutoEntity auto, ParkingLotEntity lot,
-                            int lotItem, String dateParking, String dateDepart, String paid, 
+                            int lotItem, String dateParking, String dateDepart, String paid,
                             HttpServletResponse response) {
 
         //Дата возвращается в формате строки, поэтому приходится дополнительно парсить строку с датой
@@ -204,12 +146,12 @@ public class ParkingService implements IParkingService {
             parkingRepository.save(p);
         }
         catch(Exception e) {
-        try {
-            response.sendError(461);
-        } catch (IOException ioException) {
-            ioException.printStackTrace();
+            try {
+                response.sendError(461);
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
         }
-    }
     }
 
     private boolean checkValidLotItem(ParkingLotEntity lot, int lotItem) {
