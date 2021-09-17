@@ -4,14 +4,14 @@ import com.example.parking.entities.AutoEntity;
 import com.example.parking.interfaces.IAutoService;
 import com.example.parking.repos.AutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@RestController
+@Service
 public class AutoService implements IAutoService {
     @Autowired
     private AutoRepository autoRepository;

@@ -12,6 +12,4 @@ public interface ParkingLotRepository extends CrudRepository<ParkingLotEntity, I
 
     List<ParkingLotEntity> findByIdLot(int idLot);
     List<ParkingLotEntity> findByName(String name);
-    //TODO Изменить точный поиск на примерный
-    //List<AutoEntity> findByBrandAndModel(String brand, String autoModel);
 }

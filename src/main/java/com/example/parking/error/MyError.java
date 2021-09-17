@@ -13,6 +13,7 @@ public class MyError {
     //  Подумать над оптимизацией и стоит ли вернуть Map'ы в отдельный класс
     public static Map<Integer, String> headers = new HashMap<>(); {
         headers.put(0, "Неопознанная ошибка!");
+        headers.put(404, "Ошибка 403");
         headers.put(404, "Ошибка 404");
         headers.put(405, "Ошибка 405");
         headers.put(460, "Ошибка вставки в базу данных.");
@@ -22,6 +23,7 @@ public class MyError {
     }
     public static Map<Integer, String> descriptions = new HashMap<>(); {
         descriptions.put(0, "Произошла необработанная ошибка!");
+        descriptions.put(403, "Нет доступа к данному ресурсу!");
         descriptions.put(404, "Страница не найдена!");
         descriptions.put(405, "Данная страница не обрабатывается сервером!");
         descriptions.put(460, "Заданное парковочное место уже занято!");

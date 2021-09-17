@@ -13,17 +13,18 @@ import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ParkingController {
-    private IParkingService lotService;
+    private IParkingService parkingService;
 
     //Разворачивание сервиса
     @Autowired
     public void setService(IParkingService service) {
-        this.lotService = service;
+        this.parkingService = service;
     }
 
     @GetMapping(path="/parkingAdd")
-    public String getFormParkingAdd() {
-        return "parkingAdd";
+    public String getFormParkingAdd(Model model) {
+        parkingService.findAllParking(model);
+        return "parking/parkingAdd";
     }
 
     @PostMapping(path="/parkingAdd")
@@ -31,9 +32,21 @@ public class ParkingController {
                              @RequestParam int idLot, @RequestParam int lotItem,
                              @RequestParam String dateParking, @RequestParam String dateDepart,
                              @RequestParam(value = "paid", required = false) String paid,
-                             final HttpServletResponse response) {
-        lotService.addNewParking(idClient, idAuto, idLot, lotItem, dateParking, dateDepart, paid, response);
-        return "redirect:/parkingAll";
+                             Model model, final HttpServletResponse response) {
+
+        if (parkingService.checkValidLotItem(idLot, lotItem)) {
+            parkingService.addNewParking(idClient, idAuto, idLot, lotItem, dateParking, dateDepart, paid, response);
+            return "redirect:/parkingAll";
+        }
+        else {
+            model.addAttribute("error", "Данное парковочное место уже занято, " +
+                    "либо его номер превышает допустимый у данной парковки! Попробуйте другое.");
+            parkingService.findAllParking(model);
+            return "parking/parkingAdd";
+        }
+
+
+
     }
 
     @GetMapping(path="/parkingEdit")
@@ -43,8 +56,8 @@ public class ParkingController {
 
     @GetMapping(path="/parkingEdit/{id}")
     public String getFormEditParkingById(@PathVariable(value = "id") int idParking, Model model) {
-        lotService.findParkingById(idParking, model);
-        return "parkingEdit";
+        parkingService.findParkingById(idParking, model);
+        return "parking/parkingEdit";
     }
 
     @PostMapping(path="/parkingEdit")
@@ -58,46 +71,46 @@ public class ParkingController {
                                      @RequestParam String dateParking, @RequestParam String dateDepart,
                                      @RequestParam(value = "paid", required = false) String paid,
                                      Model model, HttpServletResponse response) {
-        lotService.editParkingById(idParking, idClient, idAuto, idLot, lotItem, dateParking,
+        parkingService.editParkingById(idParking, idClient, idAuto, idLot, lotItem, dateParking,
                 dateDepart, paid, model, response);
         return "redirect:/parkingEdit";
     }
 
     @GetMapping(path="/parkingDelete")
     public String getAllDeleteParking (Model model) {
-        lotService.findAllParking(model);
-        return "parkingDelete";
+        parkingService.findAllParking(model);
+        return "parking/parkingDelete";
     }
 
     @GetMapping(path="/parkingDelete/{id}")
     public String getToDeleteParking (@PathVariable(value = "id") int idParking, Model model) {
-        lotService.findParkingById(idParking, model);
-        return "parkingDelete";
+        parkingService.findParkingById(idParking, model);
+        return "parking/parkingDelete";
     }
 
     @PostMapping(path="/parkingDelete" )
     public String deleteParkingById(@RequestParam int idParking, Model model) {
-        lotService.deleteParkingById(idParking, model);
-        return "parkingDelete";
+        parkingService.deleteParkingById(idParking, model);
+        return "parking/parkingDelete";
     }
 
     @PostMapping(path="/parkingDelete/{id}")
     public String deleteParkingByPathId(@PathVariable(value = "id") int idParking, Model model) {
-        lotService.deleteParkingById(idParking, model);
-        return "parkingDelete";
+        parkingService.deleteParkingById(idParking, model);
+        return "parking/parkingDelete";
     }
 
     @GetMapping(path="/parkingAll")
     public String getAllParking (Model model) {
-        lotService.findAllParking(model);
-        return "parkingAll";
+        parkingService.findAllParking(model);
+        return "parking/parkingAll";
     }
 
     @PostMapping("/parkingAll")
     public String filter (@RequestParam int idClient, @RequestParam int idAuto,
                           @RequestParam int idLot, Model model)
     {
-        lotService.getParkingByPrimaryCodes(idClient, idAuto, idLot, model);
-        return "parkingAll";
+        parkingService.getParkingByPrimaryCodes(idClient, idAuto, idLot, model);
+        return "parking/parkingAll";
     }
 }

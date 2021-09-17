@@ -24,7 +24,7 @@ public class ParkingLotController {
 
     @GetMapping(path="/parkingLotAdd")
     public String getFormClientAdd() {
-        return "parkingLotAdd";
+        return "parkingLot/parkingLotAdd";
     }
 
     @PostMapping(path="/parkingLotAdd")
@@ -38,13 +38,13 @@ public class ParkingLotController {
     @GetMapping(path="/parkingLotEdit")
     public String getFormEditLot(Model model) {
         lotService.findAllLot(model);
-        return "parkingLotEdit";
+        return "parkingLot/parkingLotEdit";
     }
 
     @GetMapping(path="/parkingLotEdit/{id}")
     public String getFormEditLotById(@PathVariable(value = "id") int idLot, Model model) {
         lotService.findLotById(idLot, model);
-        return "parkingLotEdit";
+        return "parkingLot/parkingLotEdit";
     }
 
     @PostMapping(path="/parkingLotEdit")
@@ -64,37 +64,37 @@ public class ParkingLotController {
     @GetMapping(path="/parkingLotDelete")
     public String getAllDeleteLot (Model model) {
         lotService.findAllLot(model);
-        return "parkingLotDelete";
+        return "parkingLot/parkingLotDelete";
     }
 
     @GetMapping(path="/parkingLotDelete/{id}")
     public String getToDeleteLot (@PathVariable(value = "id") int idLot, Model model) {
         lotService.findLotById(idLot, model);
-        return "parkingLotDelete";
+        return "parkingLot/parkingLotDelete";
     }
 
     @PostMapping(path="/parkingLotDelete" )
     public String deleteLotById(@RequestParam int idLot, Model model) {
         lotService.deleteLotById(idLot, model);
-        return "parkingLotDelete";
+        return "parkingLot/parkingLotDelete";
     }
 
     @PostMapping(path="/parkingLotDelete/{id}")
     public String deleteLotByPathId(@PathVariable(value = "id") int idLot, Model model) {
         lotService.deleteLotById(idLot, model);
-        return "parkingLotDelete";
+        return "parkingLot/parkingLotDelete";
     }
 
     @GetMapping(path="/parkingLotAll")
     public String getAllLot (Model model) {
         lotService.findAllLot(model);
-        return "parkingLotAll";
+        return "parkingLot/parkingLotAll";
     }
 
     @PostMapping("/parkingLotAll")
     public String filter (@RequestParam String name, Model model)
     {
         lotService.getLotByName(name, model);
-        return "parkingLotAll";
+        return "parkingLot/parkingLotAll";
     }
 }

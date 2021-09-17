@@ -4,8 +4,8 @@ import com.example.parking.entities.ClientEntity;
 import com.example.parking.interfaces.IClientService;
 import com.example.parking.repos.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-@RestController
+@Service
 public class ClientService implements IClientService {
     @Autowired
     private ClientRepository clientRepository;

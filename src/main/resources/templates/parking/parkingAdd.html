@@ -10,7 +10,7 @@
     <body>
     <a href="/home" id = "home">Главная</a>
         <h1>Оформление парковки</h1>
-        <div id = "error"></div>
+        <div id = "error" th:each = "el: ${error}" th:text = "${el}"></div>
         <form method = "post" name = "form" onsubmit = "return valid_data()">
             <table id = "table">
                 <tr>

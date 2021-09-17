@@ -10,15 +10,15 @@ import com.example.parking.repos.ClientRepository;
 import com.example.parking.repos.ParkingLotRepository;
 import com.example.parking.repos.ParkingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@RestController
+@Service
 public class ParkingService implements IParkingService {
     @Autowired
     private ClientRepository clientRepository;
@@ -29,7 +29,7 @@ public class ParkingService implements IParkingService {
     @Autowired
     private ParkingRepository parkingRepository;
 
-    public boolean addNewParking (int idClient, int idAuto, int idLot, int lotItem,
+    public void addNewParking (int idClient, int idAuto, int idLot, int lotItem,
                            String dateParking, String dateDepart, String paid,
                            final HttpServletResponse response) {
         //Связанные сущности для вставки в таблицу
@@ -37,18 +37,8 @@ public class ParkingService implements IParkingService {
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
 
-        if (checkValidLotItem(lot, lotItem)) {
-            try {
-                response.sendError(460);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return false;
-        }
-
         ParkingEntity p = new ParkingEntity();
         insertToDb(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
-        return true;
     }
 
     public void findAllParking (Model model) {
@@ -154,8 +144,10 @@ public class ParkingService implements IParkingService {
         }
     }
 
-    private boolean checkValidLotItem(ParkingLotEntity lot, int lotItem) {
+    public boolean checkValidLotItem(int idLot, int lotItem) {
+        ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
         List<ParkingEntity> p = parkingRepository.findByParkingLotByIdLotAndLotItemAndDateDepartIsNull(lot, lotItem);
-        return p.size() != 0;
+
+        return p.size() == 0 && lot.getNumLots() >= lotItem;
     }
 }

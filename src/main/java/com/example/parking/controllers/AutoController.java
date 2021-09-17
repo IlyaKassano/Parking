@@ -23,7 +23,7 @@ public class AutoController {
 
     @GetMapping(path="/autoAdd")
     public String getFormClientAdd() {
-        return "autoAdd";
+        return "auto/autoAdd";
     }
 
     @PostMapping(path="/autoAdd")
@@ -35,13 +35,13 @@ public class AutoController {
     @GetMapping(path="/autoEdit")
     public String getFormEditAuto(Model model) {
         autoService.findAllAuto(model);
-        return "autoEdit";
+        return "auto/autoEdit";
     }
 
     @GetMapping(path="/autoEdit/{id}")
     public String getFormEditAutoById(@PathVariable(value = "id") int idAuto, Model model) {
         autoService.findAutoById(idAuto, model);
-        return "autoEdit";
+        return "auto/autoEdit";
     }
 
     @PostMapping(path="/autoEdit")
@@ -60,37 +60,37 @@ public class AutoController {
     @GetMapping(path="/autoDelete")
     public String getAllDeleteAuto (Model model) {
         autoService.findAllAuto(model);
-        return "autoDelete";
+        return "auto/autoDelete";
     }
 
     @GetMapping(path="/autoDelete/{id}")
     public String getToDeleteAuto (@PathVariable(value = "id") int idAuto, Model model) {
         autoService.findAutoById(idAuto, model);
-        return "autoDelete";
+        return "auto/autoDelete";
     }
 
     @PostMapping(path="/autoDelete" )
     public String deleteAutoById(@RequestParam int idAuto, Model model) {
         autoService.deleteAutoById(idAuto, model);
-        return "autoDelete";
+        return "auto/autoDelete";
     }
 
     @PostMapping(path="/autoDelete/{id}")
     public String deleteAutoByPathId(@PathVariable(value = "id") int idAuto, Model model) {
         autoService.deleteAutoById(idAuto, model);
-        return "autoDelete";
+        return "auto/autoDelete";
     }
 
     @GetMapping(path="/autoAll")
     public String getAllAuto (Model model) {
         autoService.findAllAuto(model);
-        return "autoAll";
+        return "auto/autoAll";
     }
 
     @PostMapping("/autoAll")
     public String filter (@RequestParam String brand, @RequestParam String autoModel, Model model)
     {
         autoService.getAutoByBrandAndModel(brand, autoModel, model);
-        return "autoAll";
+        return "auto/autoAll";
     }
 }

@@ -24,7 +24,7 @@ public class ClientController {
 
     @GetMapping(path="/clientAdd")
     public String getFormClientAdd() {
-        return "clientAdd";
+        return "client/clientAdd";
     }
 
     @PostMapping(path="/clientAdd")
@@ -36,13 +36,13 @@ public class ClientController {
     @GetMapping(path="/clientEdit")
     public String getFormEditClient(Model model) {
         clientService.findAllClient(model);
-        return "clientEdit";
+        return "client/clientEdit";
     }
 
     @GetMapping(path="/clientEdit/{id}")
     public String getFormEditClientById(@PathVariable(value = "id") int idClient, Model model) {
         clientService.findClientById(idClient, model);
-        return "clientEdit";
+        return "client/clientEdit";
     }
 
     @PostMapping(path="/clientEdit")
@@ -61,37 +61,37 @@ public class ClientController {
     @GetMapping(path="/clientDelete")
     public String getAllDeleteClient (Model model) {
         clientService.findAllClient(model);
-        return "clientDelete";
+        return "client/clientDelete";
     }
 
     @GetMapping(path="/clientDelete/{id}")
     public String getToDeleteClient (@PathVariable(value = "id") int idClient, Model model) {
         clientService.findClientById(idClient, model);
-        return "clientDelete";
+        return "client/clientDelete";
     }
 
     @PostMapping(path="/clientDelete" )
     public String deleteClientById(@RequestParam int idClient, Model model) {
         clientService.deleteClientById(idClient, model);
-        return "clientDelete";
+        return "client/clientDelete";
     }
 
     @PostMapping(path="/clientDelete/{id}")
     public String deleteClientByPathId(@PathVariable(value = "id") int idClient, Model model) {
         clientService.deleteClientById(idClient, model);
-        return "clientDelete";
+        return "client/clientDelete";
     }
 
     @GetMapping(path="/clientAll")
     public String getAllClient (Model model) {
         clientService.findAllClient(model);
-        return "clientAll";
+        return "client/clientAll";
     }
 
     @PostMapping("/clientAll")
     public String filter (@RequestParam String fio, Model model)
     {
         clientService.getClientByFio(fio, model);
-        return "clientAll";
+        return "client/clientAll";
     }
 }

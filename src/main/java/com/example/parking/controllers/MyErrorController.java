@@ -24,6 +24,10 @@ public class MyErrorController  implements ErrorController {
                 putErrorToModel(404, model);
                 return "error";
             }
+            else if(statusCode == HttpStatus.FORBIDDEN.value()) {
+                putErrorToModel(403, model);
+                return "error";
+            }
             else if(statusCode == HttpStatus.INTERNAL_SERVER_ERROR.value()) {
                 putErrorToModel(405, model);
                 return "error";

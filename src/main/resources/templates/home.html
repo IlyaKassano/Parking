@@ -7,6 +7,10 @@
     <script type="text/javascript" src="../static/javascript/main.js"></script>
 </head>
     <body>
+        <h1 th:inline="text">Привет, [[${#httpServletRequest.remoteUser}]]!</h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Выход"/>
+        </form>
         <div id = "menu">
             <h1>Меню</h1>
             <div id="dropdown">
