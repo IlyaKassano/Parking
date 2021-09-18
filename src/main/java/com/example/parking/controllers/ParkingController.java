@@ -44,14 +44,12 @@ public class ParkingController {
             parkingService.findAllParking(model);
             return "parking/parkingAdd";
         }
-
-
-
     }
 
     @GetMapping(path="/parkingEdit")
-    public String getFormEditParking() {
-        return "redirect:/parkingAll";
+    public String getFormEditParking(Model model) {
+        parkingService.findAllParking(model);
+        return "parking/parkingEdit";
     }
 
     @GetMapping(path="/parkingEdit/{id}")
@@ -60,9 +58,17 @@ public class ParkingController {
         return "parking/parkingEdit";
     }
 
+    //FIXME 404 Не дебажится
     @PostMapping(path="/parkingEdit")
-    public String putParkingById(@RequestParam(value = "idParking") int idParking) {
-        return "redirect:/parkingEdit/" + idParking;
+    public String putParkingById(@RequestParam int idParking, @RequestParam int idClient,
+                                 @RequestParam int idAuto, @RequestParam int idLot, @RequestParam int lotItem,
+                                 @RequestParam String dateParking, @RequestParam String dateDepart,
+                                 @RequestParam(value = "paid", required = false) String paid,
+                                 Model model, HttpServletResponse response)
+    {
+        parkingService.editParkingById(idParking, idClient, idAuto, idLot, lotItem, dateParking,
+                dateDepart, paid, model, response);
+        return "parking/parkingEdit";
     }
 
     @PostMapping(path="/parkingEdit/{id}")
@@ -70,7 +76,8 @@ public class ParkingController {
                                      @RequestParam int idAuto, @RequestParam int idLot, @RequestParam int lotItem,
                                      @RequestParam String dateParking, @RequestParam String dateDepart,
                                      @RequestParam(value = "paid", required = false) String paid,
-                                     Model model, HttpServletResponse response) {
+                                     Model model, HttpServletResponse response)
+    {
         parkingService.editParkingById(idParking, idClient, idAuto, idLot, lotItem, dateParking,
                 dateDepart, paid, model, response);
         return "redirect:/parkingEdit";
@@ -110,7 +117,7 @@ public class ParkingController {
     public String filter (@RequestParam int idClient, @RequestParam int idAuto,
                           @RequestParam int idLot, Model model)
     {
-        parkingService.getParkingByPrimaryCodes(idClient, idAuto, idLot, model);
+        parkingService.getParkingByPrimaryKeys(idClient, idAuto, idLot, model);
         return "parking/parkingAll";
     }
 }

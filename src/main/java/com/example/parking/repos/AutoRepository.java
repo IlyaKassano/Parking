@@ -11,7 +11,6 @@ import java.util.List;
 public interface AutoRepository extends CrudRepository<AutoEntity, Integer> {
 
     List<AutoEntity> findByIdAuto(int idAuto);
-    //TODO Изменить точный поиск на примерный
     List<AutoEntity> findByBrandAndModel(String brand, String autoModel);
     /*List<AutoEntity> findByLastNameAndFirstNameAndSecondNameAllIgnoreCase(String lastName, String firstName, String secondName);
     List<AutoEntity> findByLastNameAndFirstNameAllIgnoreCase(String lastName, String firstName);

@@ -1,8 +1,7 @@
 package com.example.parking.entities;
 
-import org.hibernate.annotations.Formula;
-
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,17 +9,14 @@ import java.util.Objects;
 @Table(name = "parking", schema = "parking")
 public class ParkingEntity {
     private int idParking;
+    private ClientEntity clientByIdClient;
+    private AutoEntity autoByIdCar;
+    private ParkingLotEntity parkingLotByIdLot;
     private int lotItem;
     private LocalDateTime dateParking;
     private LocalDateTime dateDepart;
     private byte paid;
-    private ClientEntity clientByIdClient;
-    private AutoEntity autoByIdCar;
-    private ParkingLotEntity parkingLotByIdLot;
-
-    //TODO Поле расчета стоимости
-    @Formula(value = "lot_item * 2")
-    public int hours;
+    private BigDecimal cost;
 
     @Id
     @Column(name = "id_parking", nullable = false)
@@ -70,6 +66,16 @@ public class ParkingEntity {
 
     public void setPaid(byte paid) {
         this.paid = paid;
+    }
+
+    @Basic
+    @Column(name = "cost", nullable = false)
+    public BigDecimal getCost() {
+        return cost;
+    }
+
+    public void setCost(BigDecimal cost) {
+        this.cost = cost;
     }
 
     @Override

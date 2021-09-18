@@ -9,30 +9,39 @@
     <body>
         <a href="/home" id = "home">Главная</a>
         <h1>Изменение клиента</h1>
-        <div th:each = "el: ${clients}">
-            <form method = "post" name = "form" onsubmit = "return valid_data()">
-                <input name = "idClient" th:value = "${el.idClient}" type = "number" readonly />
-                <input name = "fio" type = "text" th:value="${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}"/>
-                <input name = "telephone" type = "text" th:value = "${el.telephone}"/>
-                <button type = "submit" onclick = "clientFormControl()">Изменить</button>
-                <div id = "err"></div>
-            </form>
-        </div>
-
-        <!--<h2>Список клиентов</h2>
-        <form method = "post" name = "filter" action = "clientEdit/filterClient">
-            <input name = "fio" type = "text" placeholder = "Введите ФИО для поиска"/>
-            <button type = "submit">Найти</button>
-            <div id = "error"></div>
-        </form>
-        <div id = "list" th:each = "el: ${clients}">
-            <form th:action = "'/clientEdit/' + ${el.idClient}">
-                <div id = "listItem" class = "listId" th:text="${el.idClient}"> </div>
-                <div id = "listItem" th:text="${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}"></div>
-                <div id = "listItem" th:text="${el.telephone}"></div>
-                <button type = "submit" id = "listItem">Изменить</button>
-            </form>
-        </div>-->
-
+        <table id = "list" cellspacing = "0">
+            <tr>
+                <th>
+                    Код
+                </th>
+                <th>
+                    ФИО
+                </th>
+                <th>
+                    Телефон
+                </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <div th:each = "el: ${clients}">
+                <tr>
+                    <form method = "post" name = "form" onsubmit = "return valid_data()">
+                        <td>
+                            <input name = "idClient" th:value = "${el.idClient}" type = "number" readonly />
+                        </td>
+                        <td>
+                        <input name = "fio" type = "text" th:value="${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}"/>
+                        </td>
+                        <td>
+                            <input name = "telephone" type = "tel" th:value = "${el.telephone}"/>
+                        </td>
+                        <td>
+                            <button type = "submit" onclick = "clientFormControl()">Изменить</button>
+                        </td>
+                        <div id = "err"></div>
+                    </form>
+                </tr>
+            </div>
+        </table>
     </body>
 </html>

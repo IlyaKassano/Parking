@@ -48,8 +48,12 @@ public class ParkingLotController {
     }
 
     @PostMapping(path="/parkingLotEdit")
-    public String putLotById(@RequestParam int idLot) {
-        return "redirect:/parkingLotEdit/" + idLot;
+    public String putLotById(@RequestParam int idLot, @RequestParam String name,
+                             @RequestParam String address, @RequestParam int numLots,
+                             @RequestParam BigDecimal price, Model model,
+                             HttpServletResponse response) {
+        lotService.editLotById(idLot, name, address, numLots, price, model, response);
+        return "redirect:/parkingLotEdit";
     }
 
     @PostMapping(path="/parkingLotEdit/{id}")

@@ -10,30 +10,34 @@
         <a href="/home" id = "home">Главная</a>
         <h1>Изменение оформления парковки</h1>
         <div id = "error"></div>
-            <form method = "post" name = "form">
-                <table id = "table">
+            <table id = "table">
+                <tr>
+                    <th>Код</th>
+                    <th>Клиент</th>
+                    <th>Автомобиль</th>
+                    <th>Парковочное место</th>
+                    <th>Номер места</th>
+                    <th>Припаркован</th>
+                    <th>Убыл</th>
+                    <th>Оплачено</th>
+                    <th></th>
+                </tr>
+                <div th:each = "el: ${parking}">
                     <tr>
-                        <th>Код</th>
-                        <th>Клиент</th>
-                        <th>Автомобиль</th>
-                        <th>Парковочное место</th>
-                        <th>Номер места</th>
-                        <th>Припаркован</th>
-                        <th>Убыл</th>
-                        <th>Оплачено</th>
-                        <th></th>
-                    </tr>
-                    <div th:each = "el: ${parking}">
-                        <tr>
+                        <form method = "post" name = "form">
                             <td>
                                 <input name = "idParking" th:value = "${el.idParking}" type = "number" readonly />
                             </td>
                             <td>
                                 <!--Выбор клиента-->
                                 <select name = "idClient">
-                                    <div th:each = "el: ${clients}">
-                                        <option th:value = "${el.idClient}"
-                                                th:text = "${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}">
+                                    <option selected disabled hidden th:value = "${el.clientByIdClient.idClient}"
+                                        th:text="${el.clientByIdClient.lastName} + ' ' +
+                                        ${el.clientByIdClient.firstName} + ' ' + ${el.clientByIdClient.secondName}">
+                                    </option>
+                                    <div th:each = "el2: ${clients}">
+                                        <option th:value = "${el2.idClient}" th:selected="${i==el.clientByIdClient.idClient}"
+                                                th:text = "${el2.lastName} + ' ' + ${el2.firstName} + ' ' + ${el2.secondName}">
                                         </option>
                                     </div>
                                 </select>
@@ -41,9 +45,12 @@
                             <td>
                                 <!--Выбор автомобиля-->
                                 <select name = "idAuto">
-                                    <div th:each = "el: ${autos}">
-                                        <option th:value = "${el.idAuto}"
-                                                th:text = "${el.brand} + ' ' + ${el.model}">
+                                    <option selected disabled hidden th:value = "${el.autoByIdCar.idAuto}"
+                                            th:text="${el.autoByIdCar.brand} + ' ' + ${el.autoByIdCar.model}">
+                                    </option>
+                                    <div th:each = "el2: ${autos}">
+                                        <option th:value = "${el2.idAuto}" th:selected="${i==el.autoByIdCar.idAuto} "
+                                                th:text = "${el2.brand} + ' ' + ${el2.model}">
                                         </option>
                                     </div>
                                 </select>
@@ -51,9 +58,12 @@
                             <td>
                                 <!--Выбор парковочного еста-->
                                 <select name = "idLot">
-                                    <div th:each = "el: ${lots}">
-                                        <option th:value = "${el.idLot}"
-                                                th:text = "${el.name}">
+                                    <option selected disabled hidden th:value = "${el.parkingLotByIdLot.idLot}"
+                                            th:text="${el.parkingLotByIdLot.name}">
+                                    </option>
+                                    <div th:each = "el2: ${lots}">
+                                        <option th:value = "${el2.idLot}" th:selected="${i==el.parkingLotByIdLot.idLot}"
+                                                th:text = "${el2.name}">
                                         </option>
                                     </div>
                                 </select>
@@ -73,10 +83,10 @@
                             <td>
                                 <button type = "submit">Изменить</button>
                             </td>
-                        </tr>
-                    </div>
-                </table>
-            </form>
+                        </form>
+                    </tr>
+                </div>
+            </table>
         </div>
     </body>
 </html>

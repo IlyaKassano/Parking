@@ -11,7 +11,7 @@ import java.util.List;
     public interface ClientRepository extends CrudRepository<ClientEntity, Integer> {
 
     List<ClientEntity> findByIdClient(int idClient);
-    //TODO Изменить точный поиск на примерный
+    //TODO Изменить точный поиск на примерный?
     List<ClientEntity> findByLastNameContainsAndFirstNameContainsAndSecondNameContainsAllIgnoreCase(String lastName, String firstName, String secondName);
     List<ClientEntity> findByLastNameContainsAndFirstNameContainsAllIgnoreCase(String lastName, String firstName);
     List<ClientEntity> findByLastNameContainsIgnoreCase(String lastName);

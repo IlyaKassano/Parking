@@ -1,6 +1,6 @@
 package com.example.parking.services;
 
-import com.example.parking.entities.Role;
+import com.example.parking.enums.Role;
 import com.example.parking.entities.UserEntity;
 import com.example.parking.interfaces.IRegistrationService;
 import com.example.parking.repos.UserRepository;

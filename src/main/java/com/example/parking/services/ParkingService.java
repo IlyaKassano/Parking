@@ -15,6 +15,8 @@ import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -75,15 +77,17 @@ public class ParkingService implements IParkingService {
 
         findAllParking(model);
     }
-    
-    public void getParkingByPrimaryCodes (int idClient, int idAuto,
+
+    public void getParkingByPrimaryKeys (int idClient, int idAuto,
                           int idLot, Model model)
     {
         //Связанные сущности
         ClientEntity clients = clientRepository.findById(idClient).orElseThrow();
         AutoEntity autos = autoRepository.findById(idAuto).orElseThrow();
         ParkingLotEntity lots = lotRepository.findById(idLot).orElseThrow();
-        Iterable<ParkingEntity> parking = parkingRepository.findByClientByIdClientAndAutoByIdCarAndParkingLotByIdLot(clients, autos, lots);
+        List<ParkingEntity> parking = parkingRepository.findByClientByIdClientAndAutoByIdCarAndParkingLotByIdLot(
+                clients, autos, lots
+        );
 
         model.addAttribute("clients", clients);
         model.addAttribute("autos", autos);
@@ -111,6 +115,7 @@ public class ParkingService implements IParkingService {
         LocalDateTime dateStart = LocalDateTime.parse(dateParking);
         //Может вернуться пустой
         LocalDateTime dateEnd;
+        long hours;
 
         //CheckBox возращает строку, а база требует byte
         byte pay;
@@ -130,6 +135,12 @@ public class ParkingService implements IParkingService {
             } else {
                 dateEnd = LocalDateTime.parse(dateDepart);
                 p.setDateDepart(dateEnd);
+
+                hours = Duration.between(dateStart, dateEnd).toSeconds() / 60 / 60;
+                BigDecimal bigHours = new BigDecimal(hours);
+
+                //Уножение часов на цену для получения стоимости
+                p.setCost(bigHours.multiply(p.getParkingLotByIdLot().getPrice()));
             }
             p.setPaid(pay);
 

@@ -8,13 +8,44 @@
     <body>
     <a href="/home" id = "home">Главная</a>
         <h1>Добавление нового парковочного места</h1>
-        <form method = "post" name = "form">
-            <input name = "name" type = "text" placeholder = "Введите имя парковочного места" />
-            <input name = "address" type = "text" placeholder = "Введите адрес" />
-            <input name = "numLots" type = "number" placeholder = "Введите количество мест" />
-            <input name = "price" type = "number" step="0.01" placeholder = "Введите цену" />
-            <button type = "submit" onclick = "clientFormControl()">Добавить</button>
-            <div id = "err"></div>
-        </form>
+        <table id = "list" cellspacing = "0">
+            <tr>
+                <th>
+                    Наименование
+                </th>
+                <th>
+                    Адрес
+                </th>
+                <th>
+                    Кол-во мест
+                </th>
+                <th>
+                    Цена
+                </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            <tr>
+                <form method = "post" name = "form">
+                    <td>
+                        <input name = "name" type = "text" placeholder = "Введите имя парковочного места" />
+                    </td>
+                    <td>
+                        <input name = "address" type = "text" placeholder = "Введите адрес" />
+                    </td>
+                    <td>
+                        <input name = "numLots" type = "number" placeholder = "Введите количество мест" />
+                    </td>
+                    <td>
+                        <input name = "price" type = "number" step="0.01" placeholder = "Введите цену" />
+                    </td>
+                    <td>
+                        <button type = "submit" onclick = "clientFormControl()">Добавить</button>
+                    </td>
+                    <td>
+                    <div id = "err"></div>
+                </form>
+            </tr>
+        </table>
     </body>
 </html>

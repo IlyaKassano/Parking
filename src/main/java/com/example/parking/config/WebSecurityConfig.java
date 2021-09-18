@@ -20,8 +20,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                //Отключение cors & csrf для корректной работы пост запросов
                 .cors().disable()
                 .csrf().disable()
+
+                //Дать все разрешения для входа/регистрации
                 .authorizeRequests()
                     .antMatchers("/", "/registration").permitAll()
                     .anyRequest().authenticated()

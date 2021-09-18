@@ -10,10 +10,28 @@
 <a href="/home" id = "home">Главная</a>
     <h1>Добавление нового автомобиля</h1>
     <form method = "post" name = "form" onsubmit = "return valid_data()">
-        <input name = "brand" type = "text" placeholder = "Введите брэнд" />
-        <input name = "autoModel" type = "text" placeholder = "Введите модель" />
-        <button type = "submit" onclick = "clientFormControl()">Добавить</button>
-        <div id = "err"></div>
+        <table id = "list" cellspacing = "0">
+            <tr>
+                <th>
+                    Брэнд
+                </th>
+                <th>
+                    Модель
+                </th>
+                <th> </th>
+            </tr>
+            <tr>
+                <td>
+                    <input name = "brand" type = "text" placeholder = "Введите брэнд" />
+                </td>
+                <td>
+                    <input name = "autoModel" type = "text" placeholder = "Введите модель" />
+                </td>
+                <td>
+                    <button type = "submit" onclick = "clientFormControl()">Добавить</button>
+                </td>
+                <div id = "err"></div>
+        </table>
     </form>
 
     <!--<h2>Список автомобилей</h2>

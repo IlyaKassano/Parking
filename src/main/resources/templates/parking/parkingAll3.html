@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Все оформления парковок</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/parking.css}">
+    <script type="text/javascript" th:src="@{/javascript/parking.js}"></script>
+</head>
+<body>
+<a href="/home" id = "home">Главная</a>
+<h2>Все оформления парковок</h2>
+<form method = "post">
+    <!--Выбор клиента-->
+    <select name = "idClient">
+        <div th:each = "el: ${clients}">
+            <option th:value = "${el.idClient}"
+                    th:text = "${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}">
+            </option>
+        </div>
+    </select>
+    <!--Выбор автомобиля-->
+    <select name = "idAuto">
+        <div th:each = "el: ${autos}">
+            <option th:value = "${el.idAuto}"
+                    th:text = "${el.brand} + ' ' + ${el.model}">
+            </option>
+        </div>
+    </select>
+    <!--Выбор парковочного еста-->
+    <select name = "idLot">
+        <div th:each = "el: ${lots}">
+            <option th:value = "${el.idLot}"
+                    th:text = "${el.name}">
+            </option>
+        </div>
+    </select>
+    <button type = "submit">Найти</button>
+    <a href="/parkingAll">Обновить</a>
+</form>
+<table id = "list" cellspacing = "0">
+    <tr>
+        <th>Клиент</th>
+        <th>Автомобиль</th>
+        <th>Парковочное место</th>
+        <th>Номер места</th>
+        <th>Припаркован</th>
+        <th>Убыл</th>
+        <th>Оплачено</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <div th:each = "el: ${parking}">
+        <tr>
+            <td>
+                <div id = "listItem" th:text="${el[1].lastName} + ' ' + ${el[1].firstName} + ' ' + ${el[1].secondName}"> </div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el[2].brand} + ' ' + ${el[2].model}"></div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el[3].name}"></div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el[4]}"></div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el[5]}"></div>
+            </td>
+            <td>
+                <div id = "listItem" th:text="${el[6]}"></div>
+            </td>
+            <td>
+                <div id = "listItem" class = "cost" th:text="${el[7]}"></div>
+            </td>
+            <td>
+                <a id = "listItem" th:href = "'/parkingEdit/' + ${el[0]}">Изменить</a>
+            </td>
+            <td>
+                <a id = "listItem" th:href = "'/parkingDelete/' + ${el[0]}">Удалить</a>
+            </td>
+        </tr>
+    </div>
+</table>
+
+</body>
+</html>

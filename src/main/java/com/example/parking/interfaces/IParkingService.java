@@ -14,6 +14,6 @@ public interface IParkingService {
                           String dateParking, String dateDepart, String paid,
                           Model model, HttpServletResponse response);
     void deleteParkingById (int idParking, Model model);
-    void getParkingByPrimaryCodes (int idClient, int idAuto, int idParking, Model model);
+    void getParkingByPrimaryKeys (int idClient, int idAuto, int idParking, Model model);
     boolean checkValidLotItem(int idLot, int lotItem);
 }

@@ -9,16 +9,39 @@
     <body>
         <a href="/home" id = "home">Главная</a>
         <h1>Изменение автомобиля</h1>
-        <!--TODO Заголовки через таблицу-->
-        <div th:each = "el: ${autos}">
-            <form method = "post" name = "form" onsubmit = "return valid_data()">
-                <input name = "idAuto" th:value = "${el.idAuto}" type = "number" readonly />
-                <input name = "brand" type = "text" th:value = "${el.brand}"/>
-                <input name = "autoModel" type = "text" th:value = "${el.model}"/>
-                <button type = "submit" onclick = "clientFormControl()">Изменить</button>
-                <div id = "err"></div>
-            </form>
-        </div>
+        <table id = "list" cellspacing = "0">
+            <tr>
+                <th>
+                    Код
+                </th>
+                <th>
+                    Брэнд
+                </th>
+                <th>
+                    Модель
+                </th>
+                <th> </th>
+            </tr>
+            <div id = "list" th:each = "el: ${autos}">
+                <tr>
+                    <form method = "post" name = "form" onsubmit = "return valid_data()">
+                        <td>
+                            <input name = "idAuto" th:value = "${el.idAuto}" type = "number" readonly />
+                        </td>
+                        <td>
+                            <input name = "brand" type = "text" th:value = "${el.brand}"/>
+                        </td>
+                        <td>
+                            <input name = "autoModel" type = "text" th:value = "${el.model}"/>
+                        </td>
+                        <td>
+                            <button type = "submit" onclick = "clientFormControl()">Изменить</button>
+                        </td>
+                        <div id = "err"></div>
+                    </form>
+                </tr>
+            </div>
+        </table>
 
         <!--<h2>Список автомобилей</h2>
         <form method = "post" name = "filter" action = "autoEdit/filterAuto">

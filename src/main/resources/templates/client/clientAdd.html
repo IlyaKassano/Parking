@@ -9,28 +9,32 @@
 <body>
 <a href="/home" id = "home">Главная</a>
     <h1>Добавление нового клиента</h1>
-    <form method = "post" name = "form" onsubmit = "return valid_data()">
-        <input name = "fio" type = "text" placeholder = "Введите ФИО клиента" />
-        <!--TODO Шаблон для ввода телефона-->
-        <input name = "telephone" type = "text" placeholder = "Введите телефон" />
-        <button type = "submit" onclick = "clientFormControl()">Добавить</button>
-        <div id = "err"></div>
-    </form>
-
-    <!--<h2>Список клиентов</h2>
-    <form method = "post" name = "filter" action = "clientAdd/filterClient">
-        <input name = "fio" type = "text" placeholder = "Введите ФИО для поиска"/>
-        <button type = "submit">Найти</button>
-        <div id = "error"></div>
-    </form>
-    <div id = "list" th:each = "el: ${clients}">
-        <form th:action = "'/clientEdit/' + ${el.idClient}">
-            <div id = "listItem" class = "listId" th:text="${el.idClient}"> </div>
-            <div id = "listItem" th:text="${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}"></div>
-            <div id = "listItem" th:text="${el.telephone}"></div>
-            <button type = "submit" id = "listItem">Изменить</button>
-        </form>
-    </div>-->
-
+    <table id = "list" cellspacing = "0">
+        <tr>
+            <th>
+                ФИО
+            </th>
+            <th>
+                Телефон
+            </th>
+            <th> </th>
+            <th> </th>
+        </tr>
+        <tr>
+            <form method = "post" name = "form" onsubmit = "return valid_data()">
+                <td>
+                    <input name = "fio" type = "text" placeholder = "Введите ФИО клиента" />
+                </td>
+                <td>
+                <!--TODO Шаблон для ввода телефона-->
+                    <input name = "telephone" type = "tel" placeholder = "Введите телефон" />
+                </td>
+                <td>
+                    <button type = "submit" onclick = "clientFormControl()">Добавить</button>
+                </td>
+                <div id = "err"></div>
+            </form>
+        </tr>
+    </table>
 </body>
 </html>

@@ -64,13 +64,13 @@
                     <div id = "listItem" th:text="${el.lotItem}"></div>
                 </td>
                 <td>
-                    <div id = "listItem" th:text="${el.dateParking}"></div>
+                    <input id = "listItem" readonly type="datetime-local" th:text="${el.dateParking}"/>
                 </td>
                 <td>
-                    <div id = "listItem" th:text="${el.dateDepart}"></div>
+                    <input id = "listItem" readonly type="datetime-local" th:text="${el.dateDepart}"/>
                 </td>
                 <td>
-                    <div id = "listItem" th:text="${el.hours}"></div>
+                    <div id = "listItem" th:text="${el.cost}"></div>
                 </td>
                 <td>
                     <a id = "listItem" th:href = "'/parkingEdit/' + ${el.idParking}">Изменить</a>

@@ -46,8 +46,11 @@ public class ClientController {
     }
 
     @PostMapping(path="/clientEdit")
-    public String putClientById(@RequestParam int idClient) {
-        return "redirect:/clientEdit/" + idClient;
+    public String putClientById(@RequestParam int idClient, @RequestParam String fio,
+                                @RequestParam(value = "telephone") Optional<String> telephone, Model model,
+                                HttpServletResponse response) {
+        clientService.editClientById(idClient, fio, telephone, model, response);
+        return "redirect:/clientEdit";
     }
 
     @PostMapping(path="/clientEdit/{id}")

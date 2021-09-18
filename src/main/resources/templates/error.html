@@ -9,7 +9,6 @@
     <a href="/home" id = "home">Главная</a>
     <div th:each = "el: ${err}">
         <h1 th:text = "${el.header}"></h1>
-        <!--TODO Шаблон вывода ошибки-->
         <div th:text = "${el.description}"></div>
     </div>
 </body>

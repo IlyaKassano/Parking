@@ -1,6 +1,8 @@
 package com.example.parking.entities;
 
 
+import com.example.parking.enums.Role;
+
 import javax.persistence.*;
 import java.util.Set;
 
