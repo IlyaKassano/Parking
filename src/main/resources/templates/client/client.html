@@ -1,0 +1,7 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="generalHeader::header(${action})"></head>
+    <body>
+        <table th:replace="client/clientFormTemplate::clientTable (${action}, ${clients})"></table>
+    </body>
+</html>

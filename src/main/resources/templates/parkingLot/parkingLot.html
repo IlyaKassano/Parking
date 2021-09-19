@@ -1,0 +1,7 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="generalHeader::header(${action})"></head>
+    <body>
+        <table th:replace="parkingLot/parkingLotFormTemplate::lotTable (${action}, ${lots})"></table>
+    </body>
+</html>

@@ -1,6 +1,8 @@
 package com.example.parking.services;
 
 import com.example.parking.entities.AutoEntity;
+import com.example.parking.enums.ActionFront;
+import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IAutoService;
 import com.example.parking.repos.AutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +18,31 @@ public class AutoService implements IAutoService {
     @Autowired
     private AutoRepository autoRepository;
 
-    public void addNewAuto (String brand, String autoModel, final HttpServletResponse response) {
+    public void getForm(ActionFront act, Model model) {
+        ActionTemplate action = new ActionTemplate(act);
+        if(act == ActionFront.DELETE)
+            action.setReadonly(true);
+
+        model.addAttribute("action", action);
+    }
+
+    public void addNewAuto (String brand, String autoModel, final HttpServletResponse response)
+    {
         AutoEntity auto = new AutoEntity();
         insertToDb(auto, brand, autoModel, response);
     }
 
-    public void findAllAuto (Model model) {
+    public void findAllAuto (ActionFront act, Model model) {
         Iterable<AutoEntity> autos = autoRepository.findAll();
+
+        getForm(act, model);
         model.addAttribute("autos", autos);
     }
 
-    public void findAutoById (int idAuto, Model model) {
+    public void findAutoById (int idAuto, ActionFront act, Model model) {
         List<AutoEntity> autos = autoRepository.findByIdAuto(idAuto);
+
+        getForm(act, model);
         model.addAttribute("autos", autos);
     }
 
@@ -36,19 +51,21 @@ public class AutoService implements IAutoService {
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
         insertToDb(auto, brand, autoModel, response);
 
-        findAllAuto(model);
+        findAllAuto(ActionFront.EDIT, model);
     }
 
     public void deleteAutoById (int idAuto, Model model) {
         AutoEntity a = autoRepository.findById(idAuto).orElseThrow();
         autoRepository.delete(a);
 
-        findAllAuto(model);
+        findAllAuto(ActionFront.DELETE, model);
     }
 
-    public void getAutoByBrandAndModel (String brand, String autoModel, Model model)
+    public void getAutoByBrandAndModel (String brand, String autoModel, ActionFront act, Model model)
     {
         List<AutoEntity> autos = autoRepository.findByBrandAndModel(brand, autoModel);
+
+        getForm(act, model);
         model.addAttribute("autos", autos);
     }
 

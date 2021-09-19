@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="autoTable (action, autos)">
+            <a href="/home" id = "home">Главная</a>
+            <h1 th:if="${action.action == 'add'}">Добавить автомобиль</h1>
+            <h1 th:if="${action.action == 'edit'}">Изменить автомобиль</h1>
+            <h1 th:if="${action.action == 'delete'}">Удалить автомобиль</h1>
+            <h1 th:if="${action.action == 'all'}">Все автомобили</h1>
+            <table id = "list" cellspacing = "0">
+                <tr>
+                    <th th:if="${action.action == 'delete'}">
+                        Код
+                    </th>
+                    <th>
+                        Брэнд
+                    </th>
+                    <th>
+                        Модель
+                    </th>
+                </tr>
+                <!--Добавление/Редактирование/Удаление-->
+                <div th:if="${action.action != 'add'}" id = "list" th:each = "el: ${autos}">
+                    <tr>
+                        <form method = "post" name = "form">
+                            <td th:if="${action.action == 'delete'}">
+                                <input name = "idAuto" th:readonly="${action.readonly}" th:value = "${el.idAuto}" />
+                            </td>
+                            <td>
+                                <input name = "brand" th:readonly="${action.readonly}" type = "text" th:value = "${el.brand}"/>
+                            </td>
+                            <td>
+                                <input name = "autoModel" th:readonly="${action.readonly}" type = "text" th:value = "${el.model}"/>
+                            </td>
+                            <td>
+                                <button type = "submit" th:if="${action.action == 'edit'}">Изменить</button>
+                                <button type = "submit" th:if="${action.action == 'delete'}">Удалить</button>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/autoEdit/' + ${el.idAuto}">Изменить</a>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/autoDelete/' + ${el.idAuto}">Удалить</a>
+                            </td>
+                            <div id = "err"></div>
+                        </form>
+                    </tr>
+                </div>
+                <!--Пустая форма-->
+                <tr th:if="${action.action == 'add'}">
+                    <form method = "post" name = "form">
+                        <td>
+                            <input name = "brand" type = "text" placeholder="Брэнд автомобиля"/>
+                        </td>
+                        <td>
+                            <input name = "autoModel" type = "text" placeholder="Модель автомобиля"/>
+                        </td>
+                        <td>
+                            <button type = "submit">Добавить</button>
+                        </td>
+                        <div id = "err"></div>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

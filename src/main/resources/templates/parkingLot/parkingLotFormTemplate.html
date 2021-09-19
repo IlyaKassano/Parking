@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="lotTable (action, lots)">
+            <a href="/home" id = "home">Главная</a>
+            <h1 th:if="${action.action == 'add'}">Добавить парковочное место</h1>
+            <h1 th:if="${action.action == 'edit'}">Изменить парковочное место</h1>
+            <h1 th:if="${action.action == 'delete'}">Удалить парковочное место</h1>
+            <h1 th:if="${action.action == 'all'}">Все парковочные места</h1>
+            <table id = "list" cellspacing = "0">
+                <tr>
+                    <th th:if="${action.action == 'delete'}">
+                        Код
+                    </th>
+                    <th>
+                        Наименование
+                    </th>
+                    <th>
+                        Адрес
+                    </th>
+                    <th>
+                        Кол-во мест
+                    </th>
+                    <th>
+                        Цена
+                    </th>
+                </tr>
+                <!--Добавление/Редактирование/Удаление-->
+                <div th:if="${action.action != 'add'}" id = "list" th:each = "el: ${lots}">
+                    <tr>
+                        <form method = "post" name = "form">
+                            <td th:if="${action.action == 'delete'}">
+                                <input name = "idLot" th:readonly="${action.readonly}" th:value = "${el.idLot}" />
+                            </td>
+                            <td>
+                                <input name = "name" th:readonly="${action.readonly}" type = "text" th:value = "${el.name}"/>
+                            </td>
+                            <td>
+                                <input name = "address" th:readonly="${action.readonly}" type = "text" th:value = "${el.address}"/>
+                            </td>
+                            <td>
+                                <input name = "numLots" th:readonly="${action.readonly}" type = "text" th:value = "${el.numLots}"/>
+                            </td>
+                            <td>
+                                <input name = "price" th:readonly="${action.readonly}" type = "text" th:value = "${el.price}"/>
+                            </td>
+                            <td>
+                                <button type = "submit" th:if="${action.action == 'edit'}">Изменить</button>
+                                <button type = "submit" th:if="${action.action == 'delete'}">Удалить</button>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/lotEdit/' + ${el.idLot}">Изменить</a>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/lotDelete/' + ${el.idLot}">Удалить</a>
+                            </td>
+                            <div id = "err"></div>
+                        </form>
+                    </tr>
+                </div>
+                <!--Пустая форма-->
+                <tr th:if="${action.action == 'add'}">
+                    <form method = "post" name = "form">
+                        <td>
+                            <input name = "name" type = "text" placeholder = "Введите имя парковочного места" />
+                        </td>
+                        <td>
+                            <input name = "address" type = "text" placeholder = "Введите адрес" />
+                        </td>
+                        <td>
+                            <input name = "numLots" type = "number" placeholder = "Введите количество мест" />
+                        </td>
+                        <td>
+                            <input name = "price" type = "number" step="0.01" placeholder = "Введите цену" />
+                        </td>
+                        <td>
+                            <button type = "submit">Добавить</button>
+                        </td>
+                        <div id = "err"></div>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -1,6 +1,8 @@
 package com.example.parking.services;
 
 import com.example.parking.entities.ClientEntity;
+import com.example.parking.enums.ActionFront;
+import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IClientService;
 import com.example.parking.repos.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,18 +21,30 @@ public class ClientService implements IClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    public void getForm(ActionFront act, Model model) {
+        ActionTemplate action = new ActionTemplate(act);
+        if(act == ActionFront.DELETE)
+            action.setReadonly(true);
+
+        model.addAttribute("action", action);
+    }
+
     public void addNewClient (String fio, Optional<String> telephone, final HttpServletResponse response) {
         ClientEntity client = new ClientEntity();
         insertToDb(client, fio, telephone, response);
     }
 
-    public void findAllClient (Model model) {
+    public void findAllClient (ActionFront act, Model model) {
         Iterable<ClientEntity> clients = clientRepository.findAll();
+
+        getForm(act, model);
         model.addAttribute("clients", clients);
     }
 
-    public void findClientById (int idClient, Model model) {
+    public void findClientById (int idClient, ActionFront act, Model model) {
         List<ClientEntity> clients = clientRepository.findByIdClient(idClient);
+
+        getForm(act, model);
         model.addAttribute("clients", clients);
     }
 
@@ -39,17 +53,17 @@ public class ClientService implements IClientService {
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
         insertToDb(client, fio, telephone, response);
 
-        findAllClient(model);
+        findAllClient(ActionFront.EDIT, model);
     }
 
     public void deleteClientById (int idClient, Model model) {
         ClientEntity a = clientRepository.findById(idClient).orElseThrow();
         clientRepository.delete(a);
 
-        findAllClient(model);
+        findAllClient(ActionFront.DELETE, model);
     }
 
-    public void getClientByFio (String fio, Model model)
+    public void getClientByFio (String fio, ActionFront act, Model model)
     {
         List<ClientEntity> clients;
         ArrayList<String> fio_arr = getFio(fio);
@@ -66,6 +80,7 @@ public class ClientService implements IClientService {
             clients = clientRepository.findByLastNameContainsIgnoreCase(fio_arr.get(0));
         }
 
+        getForm(act, model);
         model.addAttribute("clients", clients);
     }
 

@@ -1,6 +1,8 @@
 package com.example.parking.services;
 
 import com.example.parking.entities.ParkingLotEntity;
+import com.example.parking.enums.ActionFront;
+import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IParkingLotService;
 import com.example.parking.repos.ParkingLotRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +19,30 @@ public class ParkingLotService implements IParkingLotService {
     @Autowired
     private ParkingLotRepository lotRepository;
 
+    public void getForm(ActionFront act, Model model) {
+        ActionTemplate action = new ActionTemplate(act);
+        if(act == ActionFront.DELETE)
+            action.setReadonly(true);
+
+        model.addAttribute("action", action);
+    }
+
     public void addNewLot (String name, String address, int numLots, BigDecimal price, final HttpServletResponse response) {
         ParkingLotEntity lot = new ParkingLotEntity();
         insertToDb(lot, name, address, numLots, price, response);
     }
 
-    public void findAllLot (Model model) {
+    public void findAllLot (ActionFront act, Model model) {
         Iterable<ParkingLotEntity> lots = lotRepository.findAll();
+
+        getForm(act, model);
         model.addAttribute("lots", lots);
     }
 
-    public void findLotById (int idLot, Model model) {
+    public void findLotById (int idLot, ActionFront act, Model model) {
         List<ParkingLotEntity> lots = lotRepository.findByIdLot(idLot);
+
+        getForm(act, model);
         model.addAttribute("lots", lots);
     }
 
@@ -38,20 +52,21 @@ public class ParkingLotService implements IParkingLotService {
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
         insertToDb(lot, name, address, numLots, price, response);
 
-        findAllLot(model);
+        findAllLot(ActionFront.EDIT, model);
     }
 
     public void deleteLotById (int idLot, Model model) {
         ParkingLotEntity a = lotRepository.findById(idLot).orElseThrow();
         lotRepository.delete(a);
 
-        findAllLot(model);
+        findAllLot(ActionFront.DELETE, model);
     }
 
-    public void getLotByName (String name, Model model)
+    public void getLotByName (String name, ActionFront act, Model model)
     {
         List<ParkingLotEntity> lots = lotRepository.findByName(name);
 
+        getForm(act, model);
         model.addAttribute("lots", lots);
     }
 

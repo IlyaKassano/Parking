@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="parkingTable (action, parkings)">
+            <a href="/home" id = "home">Главная</a>
+            <h1 th:if="${action.action == 'add'}">Оформить паркоку</h1>
+            <h1 th:if="${action.action == 'edit'}">Изменить оформленную парковку</h1>
+            <h1 th:if="${action.action == 'delete'}">Удалить оформленную паркоку</h1>
+            <h1 th:if="${action.action == 'all'}">Все оформленные парковки</h1>
+            <table id = "list" cellspacing = "0">
+                <tr>
+                    <th th:if="${action.action == 'delete'}">
+                        Код
+                    </th>
+                    <th>Клиент</th>
+                    <th>Автомобиль</th>
+                    <th>Парковочное место</th>
+                    <th>Номер места</th>
+                    <th>Припаркован</th>
+                    <th>Убыл</th>
+                    <th>Оплачено</th>
+                </tr>
+                <!--Добавление/Редактирование/Удаление-->
+                <div th:if="${action.action != 'add'}" id = "list" th:each = "el: ${parkings}">
+                    <tr>
+                        <form method = "post" name = "form">
+                            <td th:if="${action.action == 'delete'}">
+                                <input name = "idParking" th:readonly="${action.readonly}" th:value = "${el.idParking}" />
+                            </td>
+
+                            <td>
+                                <!--Выбор клиента-->
+                                <select name = "idClient" th:readonly="${action.readonly}">
+                                    <option selected disabled hidden th:value = "${el.clientByIdClient.idClient}"
+                                            th:text="${el.clientByIdClient.lastName} + ' ' +
+                                        ${el.clientByIdClient.firstName} + ' ' + ${el.clientByIdClient.secondName}">
+                                    </option>
+                                    <div th:each = "el2: ${clients}">
+                                        <option th:value = "${el2.idClient}" th:selected="${i==el.clientByIdClient.idClient}"
+                                                th:text = "${el2.lastName} + ' ' + ${el2.firstName} + ' ' + ${el2.secondName}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </td>
+                            <td>
+                                <!--Выбор автомобиля-->
+                                <select name = "idAuto" th:readonly="${action.readonly}">
+                                    <option selected disabled hidden th:value = "${el.autoByIdCar.idAuto}"
+                                            th:text="${el.autoByIdCar.brand} + ' ' + ${el.autoByIdCar.model}">
+                                    </option>
+                                    <div th:each = "el2: ${autos}">
+                                        <option th:value = "${el2.idAuto}" th:selected="${i==el.autoByIdCar.idAuto} "
+                                                th:text = "${el2.brand} + ' ' + ${el2.model}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </td>
+                            <td>
+                                <!--Выбор парковочного еста-->
+                                <select name = "idLot" th:readonly="${action.readonly}">
+                                    <option selected disabled hidden th:value = "${el.parkingLotByIdLot.idLot}"
+                                            th:text="${el.parkingLotByIdLot.name}">
+                                    </option>
+                                    <div th:each = "el2: ${lots}">
+                                        <option th:value = "${el2.idLot}" th:selected="${i==el.parkingLotByIdLot.idLot}"
+                                                th:text = "${el2.name}">
+                                        </option>
+                                    </div>
+                                </select>
+                            </td>
+                            <td>
+                                <input name = "lotItem" th:readonly="${action.readonly}" th:value = "${el.lotItem}" type = "number" placeholder = "Номер парковки" />
+                            </td>
+                            <td>
+                                <input name = "dateParking" th:readonly="${action.readonly}" th:value = "${el.dateParking}" type = "datetime-local" />
+                            </td>
+                            <td>
+                                <input name = "dateDepart" th:readonly="${action.readonly}" th:value = "${el.dateDepart}" type = "datetime-local" />
+                            </td>
+                            <td>
+                                <input name = "paid" th:readonly="${action.readonly}" th:checked = "${el.paid}" type = "checkbox"/>
+                            </td>
+                            <td>
+                                <button type = "submit" th:if="${action.action == 'edit'}">Изменить</button>
+                                <button type = "submit" th:if="${action.action == 'delete'}">Удалить</button>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/parkingEdit/' + ${el.idParking}">Изменить</a>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/parkingDelete/' + ${el.idParking}">Удалить</a>
+                            </td>
+                            <div id = "err"></div>
+                        </form>
+                    </tr>
+                </div>
+                <!--Пустая форма-->
+                <tr th:if="${action.action == 'add'}">
+                    <form method = "post" name = "form">
+                        <td>
+                            <!--Выбор клиента-->
+                            <select name = "idClient">
+                                <div th:each = "el: ${clients}">
+                                    <option th:value = "${el.idClient}"
+                                            th:text = "${el.lastName} + ' ' + ${el.firstName} + ' ' + ${el.secondName}">
+                                    </option>
+                                </div>
+                            </select>
+                        </td>
+                        <td>
+                            <!--Выбор автомобиля-->
+                            <select name = "idAuto">
+                                <div th:each = "el: ${autos}">
+                                    <option th:value = "${el.idAuto}"
+                                            th:text = "${el.brand} + ' ' + ${el.model}">
+                                    </option>
+                                </div>
+                            </select>
+                        </td>
+                        <td>
+                            <!--Выбор парковочного еста-->
+                            <select name = "idLot">
+                                <div th:each = "el: ${lots}">
+                                    <option th:value = "${el.idLot}"
+                                            th:text = "${el.name}">
+                                    </option>
+                                </div>
+                            </select>
+                        </td>
+                        <td>
+                            <input name = "lotItem" type = "number" required placeholder = "Номер парковки" value = "1" />
+                        </td>
+                        <td>
+                            <input name = "dateParking" type = "datetime-local" required />
+                        </td>
+                        <td>
+                            <!--TODO CheckBox для активации/деактивации поля-->
+                            <input name = "dateDepart" type = "datetime-local" />
+                        </td>
+                        <td>
+                            <input name = "paid" type = "checkbox"/>
+                        </td>
+                        <td>
+                            <button type = "submit">Добавить</button>
+                        </td>
+                        <div id = "err"></div>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

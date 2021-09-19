@@ -4,6 +4,8 @@ import com.example.parking.entities.AutoEntity;
 import com.example.parking.entities.ClientEntity;
 import com.example.parking.entities.ParkingEntity;
 import com.example.parking.entities.ParkingLotEntity;
+import com.example.parking.enums.ActionFront;
+import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IParkingService;
 import com.example.parking.repos.AutoRepository;
 import com.example.parking.repos.ClientRepository;
@@ -31,6 +33,14 @@ public class ParkingService implements IParkingService {
     @Autowired
     private ParkingRepository parkingRepository;
 
+    public void getForm(ActionFront act, Model model) {
+        ActionTemplate action = new ActionTemplate(act);
+        if(act == ActionFront.DELETE)
+            action.setReadonly(true);
+
+        model.addAttribute("action", action);
+    }
+
     public void addNewParking (int idClient, int idAuto, int idLot, int lotItem,
                            String dateParking, String dateDepart, String paid,
                            final HttpServletResponse response) {
@@ -43,20 +53,22 @@ public class ParkingService implements IParkingService {
         insertToDb(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
     }
 
-    public void findAllParking (Model model) {
+    public void findAllParking (ActionFront act, Model model) {
+        getForm(act, model);
         putEntitiesToModel(model);
     }
 
-    public void findParkingById (int idParking, Model model) {
+    public void findParkingById (int idParking, ActionFront act, Model model) {
         Iterable<ClientEntity> clients = clientRepository.findAll();
         Iterable<AutoEntity> autos = autoRepository.findAll();
         Iterable<ParkingLotEntity> lots = lotRepository.findAll();
-        List<ParkingEntity> parking = parkingRepository.findByIdParking(idParking);
+        List<ParkingEntity> parkings = parkingRepository.findByIdParking(idParking);
 
+        getForm(act, model);
         model.addAttribute("clients", clients);
         model.addAttribute("autos", autos);
         model.addAttribute("lots", lots);
-        model.addAttribute("parking", parking);
+        model.addAttribute("parkings", parkings);
     }
 
     public void editParkingById (int idParking, int idClient, int idAuto, int idLot, int lotItem,
@@ -75,36 +87,36 @@ public class ParkingService implements IParkingService {
         ParkingEntity a = parkingRepository.findById(idParking).orElseThrow();
         parkingRepository.delete(a);
 
-        findAllParking(model);
+        findAllParking(ActionFront.DELETE, model);
     }
 
-    public void getParkingByPrimaryKeys (int idClient, int idAuto,
-                          int idLot, Model model)
+    public void getParkingByPrimaryKeys (int idClient, int idAuto, int idLot, ActionFront act, Model model)
     {
         //Связанные сущности
         ClientEntity clients = clientRepository.findById(idClient).orElseThrow();
         AutoEntity autos = autoRepository.findById(idAuto).orElseThrow();
         ParkingLotEntity lots = lotRepository.findById(idLot).orElseThrow();
-        List<ParkingEntity> parking = parkingRepository.findByClientByIdClientAndAutoByIdCarAndParkingLotByIdLot(
+        List<ParkingEntity> parkings = parkingRepository.findByClientByIdClientAndAutoByIdCarAndParkingLotByIdLot(
                 clients, autos, lots
         );
 
+        getForm(act, model);
         model.addAttribute("clients", clients);
         model.addAttribute("autos", autos);
         model.addAttribute("lots", lots);
-        model.addAttribute("parking", parking);
+        model.addAttribute("parkings", parkings);
     }
 
     private void putEntitiesToModel(Model model){
         Iterable<ClientEntity> clients = clientRepository.findAll();
         Iterable<AutoEntity> autos = autoRepository.findAll();
         Iterable<ParkingLotEntity> lots = lotRepository.findAll();
-        Iterable<ParkingEntity> parking = parkingRepository.findAll();
+        Iterable<ParkingEntity> parkings = parkingRepository.findAll();
 
         model.addAttribute("clients", clients);
         model.addAttribute("autos", autos);
         model.addAttribute("lots", lots);
-        model.addAttribute("parking", parking);
+        model.addAttribute("parkings", parkings);
     }
 
     private void insertToDb(ParkingEntity p, ClientEntity client, AutoEntity auto, ParkingLotEntity lot,

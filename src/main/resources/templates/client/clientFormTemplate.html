@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="clientTable (action, clients)">
+            <a href="/home" id = "home">Главная</a>
+            <h1 th:if="${action.action == 'add'}">Добавить клиента</h1>
+            <h1 th:if="${action.action == 'edit'}">Изменить клиента</h1>
+            <h1 th:if="${action.action == 'delete'}">Удалить клиента</h1>
+            <h1 th:if="${action.action == 'all'}">Все клиенты</h1>
+            <table id = "list" cellspacing = "0">
+                <tr>
+                    <th th:if="${action.action == 'delete'}">
+                        Код
+                    </th>
+                    <th>
+                        ФИО
+                    </th>
+                    <th>
+                        Телефон
+                    </th>
+                </tr>
+                <!--Добавление/Редактирование/Удаление-->
+                <div th:if="${action.action != 'add'}" id = "list" th:each = "el: ${clients}">
+                    <tr>
+                        <form method = "post" name = "form" onsubmit = "return valid_data()">
+                            <td th:if="${action.action == 'delete'}">
+                                <input name = "idClient" th:readonly="${action.readonly}" th:value = "${el.idClient}" />
+                            </td>
+                            <td>
+                                <input name = "fio" th:readonly="${action.readonly}" type = "text" th:value="${el.lastName} + ' '
+                                + ${el.firstName} + ' ' + ${el.secondName}"/>
+                            </td>
+                            <td>
+                                <input name = "telephone" th:if = "${action.action != 'delete'}" th:readonly="${action.readonly}" type = "tel"
+                                       pattern="\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}" th:value = "${el.telephone}"/>
+                                <input name = "telephone" th:if = "${action.action == 'delete'}" th:readonly="${action.readonly}" type = "tel"
+                                       th:value = "${el.telephone}"/>
+                            </td>
+                            <td>
+                                <button type = "submit" th:if="${action.action == 'edit'}" onclick="clientFormControl()">Изменить</button>
+                                <button type = "submit" th:if="${action.action == 'delete'}">Удалить</button>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/clientEdit/' + ${el.idClient}">Изменить</a>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/clientDelete/' + ${el.idClient}">Удалить</a>
+                            </td>
+                            <div id = "err"></div>
+                        </form>
+                    </tr>
+                </div>
+                <!--Пустая форма-->
+                <tr th:if="${action.action == 'add'}">
+                    <form method = "post" name = "form" onsubmit="return valid_data()">
+                        <td>
+                            <input name = "fio" type = "text" placeholder = "Введите ФИО клиента" />
+                        </td>
+                        <td>
+                            <input name = "telephone" type = "tel" pattern="\+7 \([0-9]{3}\) [0-9]{3}-[0-9]{2}-[0-9]{2}"
+                                   size = 18 value="+7 (900) 123-45-67" />
+                        </td>
+                        <td>
+                            <button type = "submit"  onclick="clientFormControl()">Добавить</button>
+                        </td>
+                        <div id = "err"></div>
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

@@ -1,7 +1,9 @@
 package com.example.parking.controllers;
 
+import com.example.parking.enums.ActionFront;
 import com.example.parking.interfaces.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,29 +24,35 @@ public class ClientController {
         this.clientService = service;
     }
 
+    //Получить пустую форму
     @GetMapping(path="/clientAdd")
-    public String getFormClientAdd() {
-        return "client/clientAdd";
+    public String getEmptyForm(Model model) {
+        clientService.getForm(ActionFront.ADD, model);
+        return "client/client";
     }
 
+    //Обработка запроса на добавление новой записи
     @PostMapping(path="/clientAdd")
     public String addNewClient (@RequestParam String fio, @RequestParam(value = "telephone") Optional<String> telephone, HttpServletResponse response) {
         clientService.addNewClient(fio, telephone, response);
         return "redirect:/clientAll";
     }
 
+    //Получить форму всех записей для редактирования
     @GetMapping(path="/clientEdit")
     public String getFormEditClient(Model model) {
-        clientService.findAllClient(model);
-        return "client/clientEdit";
+        clientService.findAllClient(ActionFront.EDIT, model);
+        return "client/client";
     }
 
+    //Получить форму для редактирования по айди
     @GetMapping(path="/clientEdit/{id}")
     public String getFormEditClientById(@PathVariable(value = "id") int idClient, Model model) {
-        clientService.findClientById(idClient, model);
-        return "client/clientEdit";
+        clientService.findClientById(idClient, ActionFront.EDIT, model);
+        return "client/client";
     }
 
+    //Обработка изменения данных из формы
     @PostMapping(path="/clientEdit")
     public String putClientById(@RequestParam int idClient, @RequestParam String fio,
                                 @RequestParam(value = "telephone") Optional<String> telephone, Model model,
@@ -53,6 +61,7 @@ public class ClientController {
         return "redirect:/clientEdit";
     }
 
+    //Изменение данных происходит при передачи айди по ссылке
     @PostMapping(path="/clientEdit/{id}")
     public String putClientByPathId(@PathVariable(value = "id") int idClient, @RequestParam String fio,
                                     @RequestParam(value = "telephone") Optional<String> telephone, Model model,
@@ -61,40 +70,50 @@ public class ClientController {
         return "redirect:/clientEdit";
     }
 
+    //Получить форму всех записей на удаление
     @GetMapping(path="/clientDelete")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getAllDeleteClient (Model model) {
-        clientService.findAllClient(model);
-        return "client/clientDelete";
+        clientService.findAllClient(ActionFront.DELETE, model);
+        return "client/client";
     }
 
+    //Получить форму с заданным айди на удаление
     @GetMapping(path="/clientDelete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getToDeleteClient (@PathVariable(value = "id") int idClient, Model model) {
-        clientService.findClientById(idClient, model);
-        return "client/clientDelete";
+        clientService.findClientById(idClient, ActionFront.DELETE, model);
+        return "client/client";
     }
 
+    //Обработка удаления
     @PostMapping(path="/clientDelete" )
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteClientById(@RequestParam int idClient, Model model) {
         clientService.deleteClientById(idClient, model);
-        return "client/clientDelete";
+        return "client/client";
     }
 
+    //Обработка удаления по айди
     @PostMapping(path="/clientDelete/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String deleteClientByPathId(@PathVariable(value = "id") int idClient, Model model) {
         clientService.deleteClientById(idClient, model);
-        return "client/clientDelete";
+        return "client/client";
     }
 
+    //Получение формы всех записей
     @GetMapping(path="/clientAll")
     public String getAllClient (Model model) {
-        clientService.findAllClient(model);
-        return "client/clientAll";
+        clientService.findAllClient(ActionFront.ALL, model);
+        return "client/client";
     }
 
+    //Фильтрация данных на форме
     @PostMapping("/clientAll")
     public String filter (@RequestParam String fio, Model model)
     {
-        clientService.getClientByFio(fio, model);
-        return "client/clientAll";
+        clientService.getClientByFio(fio, ActionFront.ALL, model);
+        return "client/client";
     }
 }

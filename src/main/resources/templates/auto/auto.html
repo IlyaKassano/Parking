@@ -1,0 +1,7 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="generalHeader::header(${action})"></head>
+    <body>
+        <table th:replace="auto/autoFormTemplate::autoTable (${action}, ${autos})"></table>
+    </body>
+</html>
