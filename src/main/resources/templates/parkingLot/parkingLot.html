@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="generalHeader::header(${action})"></head>
+    <head th:replace="generalHeader::header">
+        <title th:if="${action.action == 'add'}">Офорление парковочного места</title>
+        <title th:if="${action.action == 'edit'}">Изменение парковочного места</title>
+        <title th:if="${action.action == 'delete'}">Удаление парковочного места</title>
+        <title th:if="${action.action == 'all'}">Все парковочные места</title>
+    </head>
     <body>
         <table th:replace="parkingLot/parkingLotFormTemplate::lotTable (${action}, ${lots})"></table>
     </body>

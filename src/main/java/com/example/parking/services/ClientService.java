@@ -31,7 +31,7 @@ public class ClientService implements IClientService {
 
     public void addNewClient (String fio, Optional<String> telephone, final HttpServletResponse response) {
         ClientEntity client = new ClientEntity();
-        insertToDb(client, fio, telephone, response);
+        insertToRepo(client, fio, telephone, response);
     }
 
     public void findAllClient (ActionFront act, Model model) {
@@ -51,14 +51,19 @@ public class ClientService implements IClientService {
     public void editClientById ( int idClient, String fio, Optional<String> telephone,
                                  Model model, HttpServletResponse response) {
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
-        insertToDb(client, fio, telephone, response);
+        insertToRepo(client, fio, telephone, response);
 
         findAllClient(ActionFront.EDIT, model);
     }
 
     public void deleteClientById (int idClient, Model model) {
         ClientEntity a = clientRepository.findById(idClient).orElseThrow();
-        clientRepository.delete(a);
+        try {
+            clientRepository.delete(a);
+        }
+        catch(Exception e) {
+            model.addAttribute("err", "Произошла ошибка при удалении! Скорее всего удалению препятсвутют связи.");
+        }
 
         findAllClient(ActionFront.DELETE, model);
     }
@@ -85,13 +90,13 @@ public class ClientService implements IClientService {
     }
 
     /**
-     * Добавление или редактирование данных в базе
+     * Добавление или редактирование данных в репозитории
      * @param c Сущность клиента
      * @param fio ФИО клиента
      * @param telephone Телефон клиента
      * @param response Ответ для передачи ошибки
      */
-    public void insertToDb(ClientEntity c, String fio, Optional<String> telephone, HttpServletResponse response){
+    public void insertToRepo(ClientEntity c, String fio, Optional<String> telephone, HttpServletResponse response){
         ArrayList<String> fio_arr = getFio(fio);
         //Вставка данных в БД
         try {

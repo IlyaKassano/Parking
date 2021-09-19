@@ -42,6 +42,7 @@ public class ParkingLotController {
 
     //Получить форму всех записей для редактирования
     @GetMapping(path="/parkingLotEdit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getFormEditLot(Model model) {
         lotService.findAllLot(ActionFront.EDIT, model);
         return "parkingLot/parkingLot";
@@ -49,6 +50,7 @@ public class ParkingLotController {
 
     //Получить форму для редактирования по айди
     @GetMapping(path="/parkingLotEdit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getFormEditLotById(@PathVariable(value = "id") int idLot, Model model) {
         lotService.findLotById(idLot, ActionFront.EDIT, model);
         return "parkingLot/parkingLot";
@@ -56,6 +58,7 @@ public class ParkingLotController {
 
     //Обработка изменения данных из формы
     @PostMapping(path="/parkingLotEdit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String putLotById(@RequestParam int idLot, @RequestParam String name,
                              @RequestParam String address, @RequestParam int numLots,
                              @RequestParam BigDecimal price, Model model,
@@ -66,6 +69,7 @@ public class ParkingLotController {
 
     //Изменение данных происходит при передачи айди по ссылке
     @PostMapping(path="/parkingLotEdit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String putLotByPathId(@PathVariable(value = "id") int idLot, @RequestParam String name,
                                  @RequestParam String address, @RequestParam int numLots,
                                  @RequestParam BigDecimal price, Model model,

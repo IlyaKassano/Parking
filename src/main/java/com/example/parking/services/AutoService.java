@@ -29,7 +29,7 @@ public class AutoService implements IAutoService {
     public void addNewAuto (String brand, String autoModel, final HttpServletResponse response)
     {
         AutoEntity auto = new AutoEntity();
-        insertToDb(auto, brand, autoModel, response);
+        insertToRepo(auto, brand, autoModel, response);
     }
 
     public void findAllAuto (ActionFront act, Model model) {
@@ -49,14 +49,19 @@ public class AutoService implements IAutoService {
     public void editAutoById ( int idAuto, String brand, String autoModel,
                             Model model, final HttpServletResponse response) {
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
-        insertToDb(auto, brand, autoModel, response);
+        insertToRepo(auto, brand, autoModel, response);
 
         findAllAuto(ActionFront.EDIT, model);
     }
 
     public void deleteAutoById (int idAuto, Model model) {
         AutoEntity a = autoRepository.findById(idAuto).orElseThrow();
-        autoRepository.delete(a);
+        try {
+            autoRepository.delete(a);
+        }
+        catch(Exception e) {
+            model.addAttribute("err", "Произошла ошибка при удалении! Скорее всего удалению препятсвутют связи.");
+        }
 
         findAllAuto(ActionFront.DELETE, model);
     }
@@ -70,13 +75,13 @@ public class AutoService implements IAutoService {
     }
 
     /**
-     * Добавление или редактирование данных в базе
+     * Добавление или редактирование данных в репозитории
      * @param auto Сущность автомобиля
      * @param brand Марка автомобиля
      * @param autoModel Модель автообиля
      * @param response Ответ для передачи ошибки
      */
-    public void insertToDb(AutoEntity auto, String brand, String autoModel, HttpServletResponse response){
+    public void insertToRepo(AutoEntity auto, String brand, String autoModel, HttpServletResponse response){
         try {
             auto.setBrand(brand);
             auto.setModel(autoModel);

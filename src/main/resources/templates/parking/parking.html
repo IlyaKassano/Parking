@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="generalHeader::header(${action})"></head>
+    <head th:replace="generalHeader::header">
+        <title th:if="${action.action == 'add'}">Офорление парковки</title>
+        <title th:if="${action.action == 'edit'}">Изменение парковки</title>
+        <title th:if="${action.action == 'delete'}">Удаление парковки</title>
+        <title th:if="${action.action == 'all'}">Все парковки</title>
+    </head>
     <body>
         <table th:replace="parking/parkingFormTemplate::parkingTable (${action}, ${parkings})"></table>
     </body>

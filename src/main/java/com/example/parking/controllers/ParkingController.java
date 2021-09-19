@@ -66,7 +66,6 @@ public class ParkingController {
         return "parking/parking";
     }
 
-    //FIXME 404 Не дебажится
     //Обработка изменения данных из формы
     @PostMapping(path="/parkingEdit")
     @PreAuthorize("hasAuthority('ADMIN')")

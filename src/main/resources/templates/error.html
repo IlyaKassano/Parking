@@ -7,9 +7,7 @@
 </head>
 <body>
     <a href="/home" id = "home">Главная</a>
-    <div th:each = "el: ${err}">
-        <h1 th:text = "${el.header}"></h1>
-        <div th:text = "${el.description}"></div>
-    </div>
+    <h1 th:text = "${statusCode}"></h1>
+    <div th:text = "${statusMessage}"></div>
 </body>
 </html>

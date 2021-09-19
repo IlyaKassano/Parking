@@ -23,8 +23,10 @@
                 <div th:if="${action.action != 'add'}" id = "list" th:each = "el: ${autos}">
                     <tr>
                         <form method = "post" name = "form">
+                            <!--Скрытое поле айди-->
+                            <input  th:if="${action.action == 'edit'}" name = "idAuto" type = "hidden" th:value = "${el.idAuto}" />
                             <td th:if="${action.action == 'delete'}">
-                                <input name = "idAuto" th:readonly="${action.readonly}" th:value = "${el.idAuto}" />
+                                <input name = "idAuto" type = "number" th:readonly="${action.readonly}" th:value = "${el.idAuto}" />
                             </td>
                             <td>
                                 <input name = "brand" th:readonly="${action.readonly}" type = "text" th:value = "${el.brand}"/>
@@ -43,6 +45,7 @@
                                 <a id = "listItem" th:href = "'/autoDelete/' + ${el.idAuto}">Удалить</a>
                             </td>
                             <div id = "err"></div>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         </form>
                     </tr>
                 </div>
@@ -59,6 +62,7 @@
                             <button type = "submit">Добавить</button>
                         </td>
                         <div id = "err"></div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     </form>
                 </tr>
             </table>

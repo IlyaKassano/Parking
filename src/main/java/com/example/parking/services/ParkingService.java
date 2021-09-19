@@ -50,7 +50,7 @@ public class ParkingService implements IParkingService {
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
 
         ParkingEntity p = new ParkingEntity();
-        insertToDb(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
+        insertToRepo(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
     }
 
     public void findAllParking (ActionFront act, Model model) {
@@ -79,13 +79,18 @@ public class ParkingService implements IParkingService {
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
 
-        insertToDb(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
+        insertToRepo(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
         putEntitiesToModel(model);
     }
 
     public void deleteParkingById (int idParking, Model model) {
         ParkingEntity a = parkingRepository.findById(idParking).orElseThrow();
-        parkingRepository.delete(a);
+        try {
+            parkingRepository.delete(a);
+        }
+        catch(Exception e) {
+            model.addAttribute("err", "Произошла ошибка при удалении! Скорее всего удалению препятсвутют связи.");
+        }
 
         findAllParking(ActionFront.DELETE, model);
     }
@@ -119,9 +124,20 @@ public class ParkingService implements IParkingService {
         model.addAttribute("parkings", parkings);
     }
 
-    private void insertToDb(ParkingEntity p, ClientEntity client, AutoEntity auto, ParkingLotEntity lot,
-                            int lotItem, String dateParking, String dateDepart, String paid,
-                            HttpServletResponse response) {
+    /**
+     * Добавление или редактирование данных в репозитории
+     * @param p Сущность парковочного места
+     * @param client Сущность клиента
+     * @param auto Сущность автообиля
+     * @param lot Сущность парковочного места
+     * @param lotItem Номер места
+     * @param dateParking Дата парковки
+     * @param dateDepart Дата убытия
+     * @param paid Оплачено
+     */
+    private void insertToRepo(ParkingEntity p, ClientEntity client, AutoEntity auto, ParkingLotEntity lot,
+                              int lotItem, String dateParking, String dateDepart, String paid,
+                              HttpServletResponse response) {
 
         //Дата возвращается в формате строки, поэтому приходится дополнительно парсить строку с датой
         LocalDateTime dateStart = LocalDateTime.parse(dateParking);

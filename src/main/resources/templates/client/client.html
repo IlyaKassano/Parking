@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="generalHeader::header(${action})"></head>
+    <head th:replace="generalHeader::header">
+        <title th:if="${action.action == 'add'}">Добавление клиента</title>
+        <title th:if="${action.action == 'edit'}">Изменение клиента</title>
+        <title th:if="${action.action == 'delete'}">Удаление клиента</title>
+        <title th:if="${action.action == 'all'}">Все клиенты</title>
+    </head>
     <body>
         <table th:replace="client/clientFormTemplate::clientTable (${action}, ${clients})"></table>
     </body>

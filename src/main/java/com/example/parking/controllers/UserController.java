@@ -1,7 +1,6 @@
 package com.example.parking.controllers;
 
-import com.example.parking.entities.UserEntity;
-import com.example.parking.interfaces.IRegistrationService;
+import com.example.parking.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,13 +8,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Controller
-public class RegistrationController {
-    private IRegistrationService userService;
+public class UserController {
+    private IUserService userService;
 
     //Разворачивание сервиса
     @Autowired
-    public void setService(IRegistrationService service) {
+    public void setService(IUserService service) {
         this.userService = service;
     }
 
@@ -25,8 +26,10 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String putRegistration(@RequestParam String username, @RequestParam String password, Model model){
-        if(userService.putRegistration(username, password, model))
+    public String putRegistration(@RequestParam String username, @RequestParam String password, Model model,
+                                  HttpServletResponse response){
+        byte enabled = 1;
+        if(userService.addNewUser(username, password, enabled, model, response))
             return "redirect:/login";
         else
             return "registration";

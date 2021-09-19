@@ -1,6 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="generalHeader::header(${action})"></head>
+    <head th:replace="generalHeader::header">
+        <title th:if="${action.action == 'add'}">Добавление автомобиля</title>
+        <title th:if="${action.action == 'edit'}">Изменение автомобиля</title>
+        <title th:if="${action.action == 'delete'}">Удаление автомобиля</title>
+        <title th:if="${action.action == 'all'}">Все автомобили</title>
+    </head>
     <body>
         <table th:replace="auto/autoFormTemplate::autoTable (${action}, ${autos})"></table>
     </body>

@@ -40,6 +40,7 @@ public class ClientController {
 
     //Получить форму всех записей для редактирования
     @GetMapping(path="/clientEdit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getFormEditClient(Model model) {
         clientService.findAllClient(ActionFront.EDIT, model);
         return "client/client";
@@ -47,6 +48,7 @@ public class ClientController {
 
     //Получить форму для редактирования по айди
     @GetMapping(path="/clientEdit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getFormEditClientById(@PathVariable(value = "id") int idClient, Model model) {
         clientService.findClientById(idClient, ActionFront.EDIT, model);
         return "client/client";
@@ -54,6 +56,7 @@ public class ClientController {
 
     //Обработка изменения данных из формы
     @PostMapping(path="/clientEdit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String putClientById(@RequestParam int idClient, @RequestParam String fio,
                                 @RequestParam(value = "telephone") Optional<String> telephone, Model model,
                                 HttpServletResponse response) {
@@ -63,6 +66,7 @@ public class ClientController {
 
     //Изменение данных происходит при передачи айди по ссылке
     @PostMapping(path="/clientEdit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String putClientByPathId(@PathVariable(value = "id") int idClient, @RequestParam String fio,
                                     @RequestParam(value = "telephone") Optional<String> telephone, Model model,
                                     HttpServletResponse response) {

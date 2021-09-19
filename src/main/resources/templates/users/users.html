@@ -1,0 +1,12 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="generalHeader::header">
+        <title th:if="${action.action == 'add'}">Добавить пользователя</title>
+        <title th:if="${action.action == 'edit'}">Изменение пользователя</title>
+        <title th:if="${action.action == 'delete'}">Удаление пользователя</title>
+        <title th:if="${action.action == 'all'}">Все пользователи</title>
+    </head>
+    <body>
+        <table th:replace="users/usersFormTemplate::userTable (${action}, ${users})"></table>
+    </body>
+</html>

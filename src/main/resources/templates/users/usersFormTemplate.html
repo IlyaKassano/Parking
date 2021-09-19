@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <div th:fragment="userTable (action, users)">
+            <a href="/home" id = "home">Главная</a>
+            <h1 th:if="${action.action == 'add'}">Добавить пользователя</h1>
+            <h1 th:if="${action.action == 'edit'}">Изменить пользователя</h1>
+            <h1 th:if="${action.action == 'delete'}">Удалить пользователя</h1>
+            <h1 th:if="${action.action == 'all'}">Все пользователи</h1>
+            <table id = "list" cellspacing = "0">
+                <tr>
+                    <th th:if="${action.action == 'delete'}">
+                        Код
+                    </th>
+                    <th>
+                        Имя пользователя
+                    </th>
+                    <th th:if="${action.action == 'edit'}">
+                        Текущий пароль
+                    </th>
+                    <th th:if="${action.action == 'edit'}">
+                        Новый пароль
+                    </th>
+                    <th>
+                        Активен
+                    </th>
+                </tr>
+                <!--Добавление/Редактирование/Удаление-->
+                <div th:if="${action.action != 'add'}" id = "list" th:each = "el: ${users}">
+                    <tr>
+                        <form method = "post" name = "form">
+                            <!--Скрытое поле айди-->
+                            <input  th:if="${action.action == 'edit'}" name = "idUser" type = "hidden" th:value = "${el.idUser}" />
+                            <td th:if="${action.action == 'delete'}">
+                                <input name = "idUser" type = "number" th:readonly="${action.readonly}" th:value = "${el.idUser}" />
+                            </td>
+                            <td>
+                                <input name = "username" th:readonly="${action.readonly}" type = "text" th:value = "${el.username}"/>
+                            </td>
+                            <td th:if="${action.action == 'edit'}">
+                                <input name = "password" th:readonly="${action.readonly}" type = "password"/>
+                            </td>
+                            <td th:if = "${action.action == 'edit'}">
+                                <input name = "newPassword" th:readonly="${action.readonly}" type = "password"/>
+                            </td>
+                            <td th:each="el2: ${el.roles}">
+                                <input name = "role" th:readonly="${action.readonly}" type = "text" th:value = "${el2.role}"/>
+                            </td>
+                            <td>
+                                <input name = "enabled" th:readonly="${action.readonly}" type = "checkbox" th:value = "${el.enabled}"/>
+                            </td>
+                            <td>
+                                <button type = "submit" th:if="${action.action == 'edit'}">Изменить</button>
+                                <button type = "submit" th:if="${action.action == 'delete'}">Удалить</button>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/userEdit/' + ${el.idUser}">Изменить</a>
+                            </td>
+                            <td th:if="${action.action == 'all'}">
+                                <a id = "listItem" th:href = "'/userDelete/' + ${el.idUser}">Удалить</a>
+                            </td>
+                            <div id = "err"></div>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        </form>
+                    </tr>
+                </div>
+                <!--Пустая форма-->
+                <tr th:if="${action.action == 'add'}">
+                    <form method = "post" name = "form">
+                        <td>
+                            <input name = "username" type = "text" placeholder = "Введите имя пользователя" />
+                        </td>
+                        <td>
+                            <input name = "password" type = "password" placeholder = "Введите пароль" />
+                        </td>
+                        <td>
+                            <input name = "enabled" type = "checkbox" />
+                        </td>
+                        <td>
+                            <button type = "submit">Добавить</button>
+                        </td>
+                        <div id = "err"></div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    </form>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

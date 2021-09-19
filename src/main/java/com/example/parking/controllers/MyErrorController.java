@@ -20,6 +20,8 @@ public class MyErrorController  implements ErrorController {
         if (status != null) {
             Integer statusCode = Integer.valueOf(status.toString());
 
+            //FIXME Нет необходимости во всех этих ифах.
+            // И вообще нужно все переделать
             if(statusCode == HttpStatus.NOT_FOUND.value()) {
                 putErrorToModel(404, model);
                 return "error";
@@ -34,6 +36,10 @@ public class MyErrorController  implements ErrorController {
             }
             else if(statusCode == 460) {
                 putErrorToModel(460, model);
+                return "error";
+            }
+            else if(statusCode == 461) {
+                putErrorToModel(461, model);
                 return "error";
             }
             else {

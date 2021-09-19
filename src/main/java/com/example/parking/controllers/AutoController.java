@@ -39,6 +39,7 @@ public class AutoController {
 
     //Получить форму всех записей для редактирования
     @GetMapping(path="/autoEdit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getFormEditAuto(Model model) {
         autoService.findAllAuto(ActionFront.EDIT, model);
         return "auto/auto";
@@ -46,6 +47,7 @@ public class AutoController {
 
     //Получить форму для редактирования по айди
     @GetMapping(path="/autoEdit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String getFormEditAutoById(@PathVariable(value = "id") int idAuto, Model model) {
         autoService.findAutoById(idAuto, ActionFront.EDIT, model);
         return "auto/auto";
@@ -53,6 +55,7 @@ public class AutoController {
 
     //Обработка изменения данных из формы
     @PostMapping(path="/autoEdit")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String putAutoById(@RequestParam int idAuto, @RequestParam String brand,
                               @RequestParam String autoModel, Model model,
                               HttpServletResponse response) {
@@ -62,6 +65,7 @@ public class AutoController {
 
     //Изменение данных происходит при передачи айди по ссылке
     @PostMapping(path="/autoEdit/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String putAutoByPathId(@PathVariable(value = "id") int idAuto, @RequestParam String brand,
                                   @RequestParam String autoModel, Model model,
                                   HttpServletResponse response) {

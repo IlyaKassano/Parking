@@ -23,8 +23,10 @@
                 <div th:if="${action.action != 'add'}" id = "list" th:each = "el: ${clients}">
                     <tr>
                         <form method = "post" name = "form" onsubmit = "return valid_data()">
+                            <!--Скрытое поле айди-->
+                            <input  th:if="${action.action == 'edit'}" name = "idClient" type = "hidden" th:value = "${el.idClient}" />
                             <td th:if="${action.action == 'delete'}">
-                                <input name = "idClient" th:readonly="${action.readonly}" th:value = "${el.idClient}" />
+                                <input name = "idClient" type = "number" th:readonly="${action.readonly}" th:value = "${el.idClient}" />
                             </td>
                             <td>
                                 <input name = "fio" th:readonly="${action.readonly}" type = "text" th:value="${el.lastName} + ' '
@@ -47,6 +49,7 @@
                                 <a id = "listItem" th:href = "'/clientDelete/' + ${el.idClient}">Удалить</a>
                             </td>
                             <div id = "err"></div>
+                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         </form>
                     </tr>
                 </div>
@@ -64,6 +67,7 @@
                             <button type = "submit"  onclick="clientFormControl()">Добавить</button>
                         </td>
                         <div id = "err"></div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     </form>
                 </tr>
             </table>

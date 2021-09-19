@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:fragment="header (action)">
+<head th:fragment="header">
     <meta charset="UTF-8" />
-    <title th:if="${action.action == 'add'}">Добавление автомобиля</title>
-    <title th:if="${action.action == 'edit'}">Изменение автомобиля</title>
-    <title th:if="${action.action == 'delete'}">Удаление автомобиля</title>
-    <title th:if="${action.action == 'all'}">Все автомобили</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/main.css}">
     <script type="text/javascript" th:src="@{/javascript/main.js}"></script>
 </head>
