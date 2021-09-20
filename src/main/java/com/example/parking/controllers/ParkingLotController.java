@@ -1,6 +1,7 @@
 package com.example.parking.controllers;
 
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.interfaces.IParkingLotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
 @Controller
@@ -34,9 +34,8 @@ public class ParkingLotController {
     //Обработка запроса на добавление новой записи
     @PostMapping(path="/parkingLotAdd")
     public String addNewLot (@RequestParam String name, @RequestParam String address,
-                             @RequestParam int numLots, @RequestParam BigDecimal price,
-                             HttpServletResponse response) {
-        lotService.addNewLot(name, address, numLots, price, response);
+                             @RequestParam int numLots, @RequestParam BigDecimal price) throws InternalException {
+        lotService.addNewLot(name, address, numLots, price);
         return "redirect:/parkingLotAll";
     }
 
@@ -61,9 +60,8 @@ public class ParkingLotController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String putLotById(@RequestParam int idLot, @RequestParam String name,
                              @RequestParam String address, @RequestParam int numLots,
-                             @RequestParam BigDecimal price, Model model,
-                             HttpServletResponse response) {
-        lotService.editLotById(idLot, name, address, numLots, price, model, response);
+                             @RequestParam BigDecimal price, Model model) throws InternalException {
+        lotService.editLotById(idLot, name, address, numLots, price, model);
         return "redirect:/parkingLotEdit";
     }
 
@@ -72,9 +70,8 @@ public class ParkingLotController {
     @PreAuthorize("hasAuthority('ADMIN')")
     public String putLotByPathId(@PathVariable(value = "id") int idLot, @RequestParam String name,
                                  @RequestParam String address, @RequestParam int numLots,
-                                 @RequestParam BigDecimal price, Model model,
-                                 HttpServletResponse response) {
-        lotService.editLotById(idLot, name, address, numLots, price, model, response);
+                                 @RequestParam BigDecimal price, Model model) throws InternalException {
+        lotService.editLotById(idLot, name, address, numLots, price, model);
         return "redirect:/parkingLotEdit";
     }
 

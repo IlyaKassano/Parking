@@ -7,6 +7,7 @@
             <h1 th:if="${action.action == 'edit'}">Изменить автомобиль</h1>
             <h1 th:if="${action.action == 'delete'}">Удалить автомобиль</h1>
             <h1 th:if="${action.action == 'all'}">Все автомобили</h1>
+            <div id = "err"></div>
             <table id = "list" cellspacing = "0">
                 <tr>
                     <th th:if="${action.action == 'delete'}">
@@ -24,7 +25,7 @@
                     <tr>
                         <form method = "post" name = "form">
                             <!--Скрытое поле айди-->
-                            <input  th:if="${action.action == 'edit'}" name = "idAuto" type = "hidden" th:value = "${el.idAuto}" />
+                            <input th:if="${action.action == 'edit'}" name = "idAuto" type = "hidden" th:value = "${el.idAuto}" />
                             <td th:if="${action.action == 'delete'}">
                                 <input name = "idAuto" type = "number" th:readonly="${action.readonly}" th:value = "${el.idAuto}" />
                             </td>
@@ -64,7 +65,6 @@
                     </form>
                 </tr>
             </table>
-            <div id = "err"></div>
         </div>
     </body>
 </html>

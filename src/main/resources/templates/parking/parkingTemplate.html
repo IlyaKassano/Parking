@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
     <body>
-        <div th:fragment="parkingTable (action, parkings)">
+        <div th:fragment="parkingTable (action, err, parkings)">
             <a href="/home" id = "home">Главная</a>
             <h1 th:if="${action.action == 'add'}">Оформить паркоку</h1>
             <h1 th:if="${action.action == 'edit'}">Изменить оформленную парковку</h1>
             <h1 th:if="${action.action == 'delete'}">Удалить оформленную паркоку</h1>
             <h1 th:if="${action.action == 'all'}">Все оформленные парковки</h1>
+            <div th:text="${err}" id = "err"></div>
             <table id = "list" cellspacing = "0">
                 <tr>
                     <th th:if="${action.action == 'delete'}">
@@ -148,7 +149,6 @@
                     </form>
                 </tr>
             </table>
-            <div id = "err"></div>
         </div>
     </body>
 </html>

@@ -1,6 +1,7 @@
 package com.example.parking.controllers;
 
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.interfaces.IAutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class AutoController {
@@ -32,8 +31,8 @@ public class AutoController {
 
     //Обработка запроса на добавление новой записи
     @PostMapping(path="/autoAdd")
-    public String addNewAuto (@RequestParam String brand, @RequestParam String autoModel, HttpServletResponse response) {
-        autoService.addNewAuto(brand, autoModel, response);
+    public String addNewAuto (@RequestParam String brand, @RequestParam String autoModel) throws InternalException {
+        autoService.addNewAuto(brand, autoModel);
         return "redirect:/autoAll";
     }
 
@@ -57,9 +56,8 @@ public class AutoController {
     @PostMapping(path="/autoEdit")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String putAutoById(@RequestParam int idAuto, @RequestParam String brand,
-                              @RequestParam String autoModel, Model model,
-                              HttpServletResponse response) {
-        autoService.editAutoById(idAuto, brand, autoModel, model, response);
+                              @RequestParam String autoModel, Model model) throws InternalException {
+        autoService.editAutoById(idAuto, brand, autoModel, model);
         return "redirect:/autoEdit";
     }
 
@@ -67,9 +65,8 @@ public class AutoController {
     @PostMapping(path="/autoEdit/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String putAutoByPathId(@PathVariable(value = "id") int idAuto, @RequestParam String brand,
-                                  @RequestParam String autoModel, Model model,
-                                  HttpServletResponse response) {
-        autoService.editAutoById(idAuto, brand, autoModel, model, response);
+                                  @RequestParam String autoModel, Model model) throws InternalException {
+        autoService.editAutoById(idAuto, brand, autoModel, model);
         return "redirect:/autoEdit";
     }
 

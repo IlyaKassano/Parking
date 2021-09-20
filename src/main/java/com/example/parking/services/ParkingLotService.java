@@ -2,6 +2,7 @@ package com.example.parking.services;
 
 import com.example.parking.entities.ParkingLotEntity;
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IParkingLotService;
 import com.example.parking.repos.ParkingLotRepository;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -27,9 +26,9 @@ public class ParkingLotService implements IParkingLotService {
         model.addAttribute("action", action);
     }
 
-    public void addNewLot (String name, String address, int numLots, BigDecimal price, final HttpServletResponse response) {
+    public void addNewLot (String name, String address, int numLots, BigDecimal price) throws InternalException {
         ParkingLotEntity lot = new ParkingLotEntity();
-        insertToRepo(lot, name, address, numLots, price, response);
+        insertToRepo(lot, name, address, numLots, price);
     }
 
     public void findAllLot (ActionFront act, Model model) {
@@ -46,11 +45,11 @@ public class ParkingLotService implements IParkingLotService {
         model.addAttribute("lots", lots);
     }
 
-    public void editLotById (int idLot, String name, String address, int numLots,
-                             BigDecimal price,
-                                 Model model, HttpServletResponse response) {
+    public void editLotById (int idLot, String name, String address, int numLots, BigDecimal price, Model model)
+            throws InternalException
+    {
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
-        insertToRepo(lot, name, address, numLots, price, response);
+        insertToRepo(lot, name, address, numLots, price);
 
         findAllLot(ActionFront.EDIT, model);
     }
@@ -82,8 +81,9 @@ public class ParkingLotService implements IParkingLotService {
      * @param address Телефон клиента
      * @param price Цена за паркоку
      */
-    private void insertToRepo(ParkingLotEntity lot, String name, String address, int numLots,
-                              BigDecimal price, HttpServletResponse response){
+    private void insertToRepo(ParkingLotEntity lot, String name, String address, int numLots, BigDecimal price)
+            throws InternalException
+    {
         try {
             lot.setName(name);
             lot.setAddress(address);
@@ -93,11 +93,7 @@ public class ParkingLotService implements IParkingLotService {
             lotRepository.save(lot);
         }
         catch(Exception e) {
-            try {
-                response.sendError(461);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            throw new InternalException(500, "Ошибка при добавлении/редактировании данных.");
         }
     }
 }

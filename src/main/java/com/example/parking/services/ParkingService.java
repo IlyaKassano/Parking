@@ -5,6 +5,7 @@ import com.example.parking.entities.ClientEntity;
 import com.example.parking.entities.ParkingEntity;
 import com.example.parking.entities.ParkingLotEntity;
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IParkingService;
 import com.example.parking.repos.AutoRepository;
@@ -15,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -42,15 +41,14 @@ public class ParkingService implements IParkingService {
     }
 
     public void addNewParking (int idClient, int idAuto, int idLot, int lotItem,
-                           String dateParking, String dateDepart, String paid,
-                           final HttpServletResponse response) {
+                           String dateParking, String dateDepart, String paid) throws InternalException {
         //Связанные сущности для вставки в таблицу
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
 
         ParkingEntity p = new ParkingEntity();
-        insertToRepo(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
+        insertToRepo(p, client, auto, lot, lotItem, dateParking, dateDepart, paid);
     }
 
     public void findAllParking (ActionFront act, Model model) {
@@ -73,13 +71,13 @@ public class ParkingService implements IParkingService {
 
     public void editParkingById (int idParking, int idClient, int idAuto, int idLot, int lotItem,
                                  String dateParking, String dateDepart, String paid,
-                                 Model model, HttpServletResponse response) {
+                                 Model model) throws InternalException {
         ParkingEntity p = parkingRepository.findById(idParking).orElseThrow();
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
         ParkingLotEntity lot = lotRepository.findById(idLot).orElseThrow();
 
-        insertToRepo(p, client, auto, lot, lotItem, dateParking, dateDepart, paid, response);
+        insertToRepo(p, client, auto, lot, lotItem, dateParking, dateDepart, paid);
         putEntitiesToModel(model);
     }
 
@@ -136,8 +134,9 @@ public class ParkingService implements IParkingService {
      * @param paid Оплачено
      */
     private void insertToRepo(ParkingEntity p, ClientEntity client, AutoEntity auto, ParkingLotEntity lot,
-                              int lotItem, String dateParking, String dateDepart, String paid,
-                              HttpServletResponse response) {
+                              int lotItem, String dateParking, String dateDepart, String paid)
+            throws InternalException
+    {
 
         //Дата возвращается в формате строки, поэтому приходится дополнительно парсить строку с датой
         LocalDateTime dateStart = LocalDateTime.parse(dateParking);
@@ -175,11 +174,7 @@ public class ParkingService implements IParkingService {
             parkingRepository.save(p);
         }
         catch(Exception e) {
-            try {
-                response.sendError(461);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            throw new InternalException(500, "Ошибка при добавлении/редактировании данных.");
         }
     }
 

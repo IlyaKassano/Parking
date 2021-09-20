@@ -2,6 +2,7 @@ package com.example.parking.services;
 
 import com.example.parking.entities.AutoEntity;
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IAutoService;
 import com.example.parking.repos.AutoRepository;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -26,10 +25,10 @@ public class AutoService implements IAutoService {
         model.addAttribute("action", action);
     }
 
-    public void addNewAuto (String brand, String autoModel, final HttpServletResponse response)
+    public void addNewAuto (String brand, String autoModel) throws InternalException
     {
         AutoEntity auto = new AutoEntity();
-        insertToRepo(auto, brand, autoModel, response);
+        insertToRepo(auto, brand, autoModel);
     }
 
     public void findAllAuto (ActionFront act, Model model) {
@@ -46,10 +45,9 @@ public class AutoService implements IAutoService {
         model.addAttribute("autos", autos);
     }
 
-    public void editAutoById ( int idAuto, String brand, String autoModel,
-                            Model model, final HttpServletResponse response) {
+    public void editAutoById ( int idAuto, String brand, String autoModel, Model model) throws InternalException {
         AutoEntity auto = autoRepository.findById(idAuto).orElseThrow();
-        insertToRepo(auto, brand, autoModel, response);
+        insertToRepo(auto, brand, autoModel);
 
         findAllAuto(ActionFront.EDIT, model);
     }
@@ -79,9 +77,8 @@ public class AutoService implements IAutoService {
      * @param auto Сущность автомобиля
      * @param brand Марка автомобиля
      * @param autoModel Модель автообиля
-     * @param response Ответ для передачи ошибки
      */
-    public void insertToRepo(AutoEntity auto, String brand, String autoModel, HttpServletResponse response){
+    public void insertToRepo(AutoEntity auto, String brand, String autoModel) throws InternalException {
         try {
             auto.setBrand(brand);
             auto.setModel(autoModel);
@@ -89,11 +86,7 @@ public class AutoService implements IAutoService {
             autoRepository.save(auto);
         }
         catch(Exception e) {
-            try {
-                response.sendError(461);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            throw new InternalException(500, "Ошибка при добавлении/редактировании данных.");
         }
     }
 }

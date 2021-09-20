@@ -1,6 +1,7 @@
 package com.example.parking.controllers;
 
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.interfaces.IClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 @Controller
@@ -33,8 +33,10 @@ public class ClientController {
 
     //Обработка запроса на добавление новой записи
     @PostMapping(path="/clientAdd")
-    public String addNewClient (@RequestParam String fio, @RequestParam(value = "telephone") Optional<String> telephone, HttpServletResponse response) {
-        clientService.addNewClient(fio, telephone, response);
+    public String addNewClient (@RequestParam String fio,
+                                @RequestParam(value = "telephone") Optional<String> telephone) throws InternalException
+    {
+        clientService.addNewClient(fio, telephone);
         return "redirect:/clientAll";
     }
 
@@ -58,9 +60,10 @@ public class ClientController {
     @PostMapping(path="/clientEdit")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String putClientById(@RequestParam int idClient, @RequestParam String fio,
-                                @RequestParam(value = "telephone") Optional<String> telephone, Model model,
-                                HttpServletResponse response) {
-        clientService.editClientById(idClient, fio, telephone, model, response);
+                                @RequestParam(value = "telephone") Optional<String> telephone, Model model)
+            throws InternalException
+    {
+        clientService.editClientById(idClient, fio, telephone, model);
         return "redirect:/clientEdit";
     }
 
@@ -68,9 +71,10 @@ public class ClientController {
     @PostMapping(path="/clientEdit/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public String putClientByPathId(@PathVariable(value = "id") int idClient, @RequestParam String fio,
-                                    @RequestParam(value = "telephone") Optional<String> telephone, Model model,
-                                    HttpServletResponse response) {
-        clientService.editClientById(idClient, fio, telephone, model, response);
+                                    @RequestParam(value = "telephone") Optional<String> telephone, Model model)
+            throws InternalException
+    {
+        clientService.editClientById(idClient, fio, telephone, model);
         return "redirect:/clientEdit";
     }
 

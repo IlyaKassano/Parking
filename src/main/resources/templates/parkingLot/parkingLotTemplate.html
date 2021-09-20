@@ -7,6 +7,7 @@
             <h1 th:if="${action.action == 'edit'}">Изменить парковочное место</h1>
             <h1 th:if="${action.action == 'delete'}">Удалить парковочное место</h1>
             <h1 th:if="${action.action == 'all'}">Все парковочные места</h1>
+            <div id = "err"></div>
             <table id = "list" cellspacing = "0">
                 <tr>
                     <th th:if="${action.action == 'delete'}">
@@ -82,7 +83,6 @@
                     </form>
                 </tr>
             </table>
-            <div id = "err"></div>
         </div>
     </body>
 </html>

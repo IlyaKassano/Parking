@@ -1,6 +1,7 @@
 package com.example.parking.controllers;
 
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.interfaces.IParkingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 public class ParkingController {
@@ -35,15 +34,16 @@ public class ParkingController {
     public String addNewParking (@RequestParam int idClient, @RequestParam int idAuto,
                              @RequestParam int idLot, @RequestParam int lotItem,
                              @RequestParam String dateParking, @RequestParam String dateDepart,
-                             @RequestParam(value = "paid", required = false) String paid,
-                             Model model, final HttpServletResponse response) {
+                             @RequestParam(value = "paid", required = false) String paid, Model model)
+            throws InternalException
+    {
 
         if (parkingService.checkValidLotItem(idLot, lotItem)) {
-            parkingService.addNewParking(idClient, idAuto, idLot, lotItem, dateParking, dateDepart, paid, response);
+            parkingService.addNewParking(idClient, idAuto, idLot, lotItem, dateParking, dateDepart, paid);
             return "redirect:/parkingAll";
         }
         else {
-            model.addAttribute("error", "Данное парковочное место уже занято, " +
+            model.addAttribute("err", "Данное парковочное место уже занято, " +
                     "либо его номер превышает допустимый у данной парковки! Попробуйте другое.");
             parkingService.findAllParking(ActionFront.ADD, model);
             return "parking/parking";
@@ -72,11 +72,9 @@ public class ParkingController {
     public String putParkingById(@RequestParam int idParking, @RequestParam int idClient,
                                  @RequestParam int idAuto, @RequestParam int idLot, @RequestParam int lotItem,
                                  @RequestParam String dateParking, @RequestParam String dateDepart,
-                                 @RequestParam(value = "paid", required = false) String paid,
-                                 Model model, HttpServletResponse response)
-    {
+                                 @RequestParam(value = "paid", required = false) String paid, Model model) throws InternalException {
         parkingService.editParkingById(idParking, idClient, idAuto, idLot, lotItem, dateParking,
-                dateDepart, paid, model, response);
+                dateDepart, paid, model);
         return "parking/parking";
     }
 
@@ -86,11 +84,11 @@ public class ParkingController {
     public String putParkingByPathId(@PathVariable(value = "id") int idParking, @RequestParam int idClient,
                                      @RequestParam int idAuto, @RequestParam int idLot, @RequestParam int lotItem,
                                      @RequestParam String dateParking, @RequestParam String dateDepart,
-                                     @RequestParam(value = "paid", required = false) String paid,
-                                     Model model, HttpServletResponse response)
+                                     @RequestParam(value = "paid", required = false) String paid, Model model)
+            throws InternalException
     {
         parkingService.editParkingById(idParking, idClient, idAuto, idLot, lotItem, dateParking,
-                dateDepart, paid, model, response);
+                dateDepart, paid, model);
         return "redirect:/parkingEdit";
     }
 

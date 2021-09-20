@@ -2,6 +2,7 @@ package com.example.parking.services;
 
 import com.example.parking.entities.ClientEntity;
 import com.example.parking.enums.ActionFront;
+import com.example.parking.exception.InternalException;
 import com.example.parking.fronttemplates.ActionTemplate;
 import com.example.parking.interfaces.IClientService;
 import com.example.parking.repos.ClientRepository;
@@ -9,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -29,9 +28,9 @@ public class ClientService implements IClientService {
         model.addAttribute("action", action);
     }
 
-    public void addNewClient (String fio, Optional<String> telephone, final HttpServletResponse response) {
+    public void addNewClient (String fio, Optional<String> telephone) throws InternalException {
         ClientEntity client = new ClientEntity();
-        insertToRepo(client, fio, telephone, response);
+        insertToRepo(client, fio, telephone);
     }
 
     public void findAllClient (ActionFront act, Model model) {
@@ -48,10 +47,11 @@ public class ClientService implements IClientService {
         model.addAttribute("clients", clients);
     }
 
-    public void editClientById ( int idClient, String fio, Optional<String> telephone,
-                                 Model model, HttpServletResponse response) {
+    public void editClientById ( int idClient, String fio, Optional<String> telephone, Model model)
+            throws InternalException
+    {
         ClientEntity client = clientRepository.findById(idClient).orElseThrow();
-        insertToRepo(client, fio, telephone, response);
+        insertToRepo(client, fio, telephone);
 
         findAllClient(ActionFront.EDIT, model);
     }
@@ -94,9 +94,8 @@ public class ClientService implements IClientService {
      * @param c Сущность клиента
      * @param fio ФИО клиента
      * @param telephone Телефон клиента
-     * @param response Ответ для передачи ошибки
      */
-    public void insertToRepo(ClientEntity c, String fio, Optional<String> telephone, HttpServletResponse response){
+    public void insertToRepo(ClientEntity c, String fio, Optional<String> telephone) throws InternalException {
         ArrayList<String> fio_arr = getFio(fio);
         //Вставка данных в БД
         try {
@@ -109,11 +108,7 @@ public class ClientService implements IClientService {
             clientRepository.save(c);
         }
         catch(Exception e) {
-            try {
-                response.sendError(461);
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
+            throw new InternalException(500, "Ошибка при добавлении/редактировании данных.");
         }
     }
 
