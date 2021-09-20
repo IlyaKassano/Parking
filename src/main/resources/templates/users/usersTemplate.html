@@ -59,7 +59,6 @@
                             <td th:if="${action.action == 'all'}">
                                 <a id = "listItem" th:href = "'/userDelete/' + ${el.idUser}">Удалить</a>
                             </td>
-                            <div id = "err"></div>
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         </form>
                     </tr>
@@ -79,11 +78,11 @@
                         <td>
                             <button type = "submit">Добавить</button>
                         </td>
-                        <div id = "err"></div>
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     </form>
                 </tr>
             </table>
+            <div id = "err"></div>
         </div>
     </body>
 </html>

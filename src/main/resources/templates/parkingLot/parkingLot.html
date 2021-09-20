@@ -7,6 +7,6 @@
         <title th:if="${action.action == 'all'}">Все парковочные места</title>
     </head>
     <body>
-        <table th:replace="parkingLot/parkingLotFormTemplate::lotTable (${action}, ${lots})"></table>
+        <table th:replace="parkingLot/parkingLotTemplate::lotTable (${action}, ${lots})"></table>
     </body>
 </html>

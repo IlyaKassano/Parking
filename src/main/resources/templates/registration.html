@@ -7,9 +7,19 @@
     <body>
         <h1>Регистрация</h1>
         <form th:action="@{/registration}" method="post">
-            <div><label> Имя пользователя : <input type="text" name="username"/> </label></div>
-            <div><label> Пароль: <input type="password" name="password"/> </label></div>
-            <div><input type="submit" value="Создать"/></div>
+            <table>
+                <tr>
+                    <td><span>Имя пользователя :</span></td>
+                    <td><input type="text" name="username"/></td>
+                </tr>
+                <tr>
+                    <td><span>Пароль :</span></td>
+                    <td><input type="password" name="password"/></td>
+                </tr>
+                <tr>
+                    <td><input type="submit" value="Войти"/></td>
+                </tr>
+            </table>
         </form>
         <a href = "/login">Уже есть аккаунт</a>
         <div th:each="el: ${message}" th:text = "${el}"></div>

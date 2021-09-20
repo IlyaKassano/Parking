@@ -7,6 +7,6 @@
         <title th:if="${action.action == 'all'}">Все клиенты</title>
     </head>
     <body>
-        <table th:replace="client/clientFormTemplate::clientTable (${action}, ${clients})"></table>
+        <table th:replace="client/clientTemplate::clientTable (${action}, ${clients})"></table>
     </body>
 </html>

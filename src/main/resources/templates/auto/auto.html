@@ -7,6 +7,6 @@
         <title th:if="${action.action == 'all'}">Все автомобили</title>
     </head>
     <body>
-        <table th:replace="auto/autoFormTemplate::autoTable (${action}, ${autos})"></table>
+        <table th:replace="auto/autoTemplate::autoTable (${action}, ${autos})"></table>
     </body>
 </html>

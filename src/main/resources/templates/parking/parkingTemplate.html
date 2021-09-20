@@ -79,9 +79,9 @@
                                 <input name = "dateDepart" th:readonly="${action.readonly}" th:value = "${el.dateDepart}" type = "datetime-local" />
                             </td>
                             <td>
-                                <input name = "paid" th:readonly="${action.readonly}" th:checked = "${el.paid}" type = "checkbox"/>
+                                <input name = "paid" id = "checkbox" th:readonly="${action.readonly}" th:checked = "${el.paid}" type = "checkbox"/>
                             </td>
-                            <td>
+                            <td th:if="${action.action != 'all'}">
                                 <button type = "submit" th:if="${action.action == 'edit'}">Изменить</button>
                                 <button type = "submit" th:if="${action.action == 'delete'}">Удалить</button>
                             </td>
@@ -91,7 +91,6 @@
                             <td th:if="${action.action == 'all'}">
                                 <a id = "listItem" th:href = "'/parkingDelete/' + ${el.idParking}">Удалить</a>
                             </td>
-                            <div id = "err"></div>
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         </form>
                     </tr>
@@ -145,11 +144,11 @@
                         <td>
                             <button type = "submit">Добавить</button>
                         </td>
-                        <div id = "err"></div>
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     </form>
                 </tr>
             </table>
+            <div id = "err"></div>
         </div>
     </body>
 </html>

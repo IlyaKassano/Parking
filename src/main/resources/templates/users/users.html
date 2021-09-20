@@ -7,6 +7,6 @@
         <title th:if="${action.action == 'all'}">Все пользователи</title>
     </head>
     <body>
-        <table th:replace="users/usersFormTemplate::userTable (${action}, ${users})"></table>
+        <table th:replace="users/usersTemplate::userTable (${action}, ${users})"></table>
     </body>
 </html>

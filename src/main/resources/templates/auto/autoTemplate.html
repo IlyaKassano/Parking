@@ -34,7 +34,7 @@
                             <td>
                                 <input name = "autoModel" th:readonly="${action.readonly}" type = "text" th:value = "${el.model}"/>
                             </td>
-                            <td>
+                            <td th:if="${action.action != 'all'}">
                                 <button type = "submit" th:if="${action.action == 'edit'}">Изменить</button>
                                 <button type = "submit" th:if="${action.action == 'delete'}">Удалить</button>
                             </td>
@@ -44,7 +44,6 @@
                             <td th:if="${action.action == 'all'}">
                                 <a id = "listItem" th:href = "'/autoDelete/' + ${el.idAuto}">Удалить</a>
                             </td>
-                            <div id = "err"></div>
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                         </form>
                     </tr>
@@ -61,11 +60,11 @@
                         <td>
                             <button type = "submit">Добавить</button>
                         </td>
-                        <div id = "err"></div>
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
                     </form>
                 </tr>
             </table>
+            <div id = "err"></div>
         </div>
     </body>
 </html>
